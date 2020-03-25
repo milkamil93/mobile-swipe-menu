@@ -1,0 +1,27 @@
+{
+  "name": "swipe-menu",
+  "description": "Swipe Menu with Vanilla JS",
+  "version": "1.0.0",
+  "homepage": "https://github.com/milkamil93/swipe-menu",
+  "main": "dist/swipe-menu.js",
+  "style": "dist/swipe-menu.css",
+  "author": "milkamil93",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milkamil93/swipe-menu.git"
+  },
+  "keywords": [
+    "swipe",
+    "menu",
+    "vanillajs",
+    "plugin",
+    "swipemenu"
+  ],
+  "bugs": {
+    "url": "https://github.com/milkamil93/swipe-menu/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
