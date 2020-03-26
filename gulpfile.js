@@ -37,7 +37,7 @@ function css(release) {
             use:[nib(), rupture()]
         }))
         .pipe(postcss())
-        .pipe(concat(release ? 'swipe-menu.min.css' : 'swipe-menu.css'))
+        .pipe(concat(release ? 'mobile-swipe-menu.min.css' : 'mobile-swipe-menu.css'))
         .pipe(gulpif(!release, sourcemaps.write('.')))
         .pipe(gulp.dest('./dist/css'))
         .pipe(browserSync.stream());
@@ -51,8 +51,8 @@ function js(release = false) {
             mode: release ? 'production' : 'development',
             output: {
                 filename: release
-                    ? 'swipe-menu.min.js'
-                    : 'swipe-menu.js',
+                    ? 'mobile-swipe-menu.min.js'
+                    : 'mobile-swipe-menu.js',
             },
             module: {
                 rules: [
