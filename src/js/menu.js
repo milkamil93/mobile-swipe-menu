@@ -1,6 +1,6 @@
 import {Swipe} from "./swipe";
 
-export class Menu {
+export default class {
 
     constructor(selector, mode) {
         this.mode = mode || 'right';

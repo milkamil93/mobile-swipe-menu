@@ -1,3 +1,2 @@
-import {Menu} from "./menu";
+import Menu from "./menu";
 window.MobileSwipeMenu = Menu;
-//new Menu('#menu', 'right');

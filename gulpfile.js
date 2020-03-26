@@ -13,35 +13,15 @@ const
         ' * @link           ${pkg.homepage}',
         '*/'
     ].join('\n'),
-    nib = require('nib'),
     gulp = require('gulp'),
     gulpif = require('gulp-if'),
-    rupture = require('rupture'),
     through = require('through2'),
     header = require('gulp-header'),
-    concat = require('gulp-concat'),
-    stylus = require('gulp-stylus'),
     uglify = require('gulp-uglify'),
-    postcss = require('gulp-postcss'),
     sourcemaps = require('gulp-sourcemaps'),
     webpackStream = require('webpack-stream'),
     browserSync = require('browser-sync').create()
 ;
-
-function css(release) {
-    release = release === true;
-    return gulp.src('./src/css/*.styl')
-        .pipe(gulpif(!release, sourcemaps.init()))
-        .pipe(stylus({
-            compress: release,
-            use:[nib(), rupture()]
-        }))
-        .pipe(postcss())
-        .pipe(concat(release ? 'mobile-swipe-menu.min.css' : 'mobile-swipe-menu.css'))
-        .pipe(gulpif(!release, sourcemaps.write('.')))
-        .pipe(gulp.dest('./dist/css'))
-        .pipe(browserSync.stream());
-}
 
 function js(release = false) {
     release = release === true;
@@ -86,20 +66,17 @@ function js(release = false) {
 
 function serve() {
     browserSync.init({server:'./dist'});
-    gulp.watch('./src/css/*.styl', gulp.series('css'));
     gulp.watch('./src/js/*.js', gulp.series('js'));
     gulp.watch('./dist/*.html').on('change', browserSync.reload);
 }
 
 exports.js = js;
-exports.css = css;
 exports.serve = serve;
 
 gulp.task('default', gulp.series(
-    gulp.parallel(js, css, serve)
+    gulp.parallel(js, serve)
 ));
 
 gulp.task('release', async function () {
-    css(true);
     js(true);
 });

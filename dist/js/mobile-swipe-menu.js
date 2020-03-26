@@ -149,7 +149,7 @@ module.exports = _createClass;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _menu__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./menu */ "./src/js/menu.js");
 
-window.MobileSwipeMenu = _menu__WEBPACK_IMPORTED_MODULE_0__["Menu"]; //new Menu('#menu', 'right');
+window.MobileSwipeMenu = _menu__WEBPACK_IMPORTED_MODULE_0__["default"];
 
 /***/ }),
 
@@ -157,12 +157,12 @@ window.MobileSwipeMenu = _menu__WEBPACK_IMPORTED_MODULE_0__["Menu"]; //new Menu(
 /*!************************!*\
   !*** ./src/js/menu.js ***!
   \************************/
-/*! exports provided: Menu */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Menu", function() { return Menu; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _default; });
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
@@ -171,9 +171,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var Menu = /*#__PURE__*/function () {
-  function Menu(selector, mode) {
-    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Menu);
+
+var _default = /*#__PURE__*/function () {
+  function _default(selector, mode) {
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, _default);
 
     this.mode = mode || 'right';
     this.boxWidth = 0;
@@ -185,7 +186,7 @@ var Menu = /*#__PURE__*/function () {
     this.swipe(selector);
   }
 
-  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Menu, [{
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(_default, [{
     key: "connectElement",
     value: function connectElement(selector) {
       this.element = document.querySelector(selector);
@@ -399,8 +400,10 @@ var Menu = /*#__PURE__*/function () {
     }
   }]);
 
-  return Menu;
+  return _default;
 }();
+
+
 
 /***/ }),
 

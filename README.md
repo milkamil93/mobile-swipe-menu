@@ -18,6 +18,13 @@ mode - operating mode
 `left` - from left to right
 ```
 ### Example
+#### ES6
 ```
+import MobileSwipeMenu from 'mobile-swipe-menu';
 new MobileSwipeMenu('#menu', 'right);
+```
+#### OR
+```
+<script src="js/mobile-swipe-menu.min.js"></script>
+<script>new MobileSwipeMenu('#menu', 'right);</script>
 ```
