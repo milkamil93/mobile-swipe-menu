@@ -4,43 +4,65 @@
     <meta charset="UTF-8">
     <title>Mobile Swipe Menu with Vanilla JS</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1"/>
-    <link rel="stylesheet" href="css/swipe-menu.css">
+    <style>
+        #menu {
+            background-color: #ccc;
+        }
+        #menu > div:not(.wrapper) {
+            background-color: #eee;
+        }
+        .wrapper {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
 </head>
 <body>
     <div id="menu">
-        <ul>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-            <li><a href="javascript:void(0)">Item menu</a></li>
-        </ul>    
+        <div class="wrapper">
+            <ul>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+                <li><a href="javascript:void(0)">Item menu</a></li>
+            </ul>
+        </div>
     </div>
     <script src="js/mobile-swipe-menu.js"></script>
+    <script>
+        new MobileSwipeMenu(
+            '#menu',
+            'right',
+            (window.innerWidth / 1.15)
+        )
+    </script>
 </body>
 </html>

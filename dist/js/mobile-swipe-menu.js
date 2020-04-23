@@ -173,11 +173,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _default = /*#__PURE__*/function () {
-  function _default(selector, mode) {
+  function _default(selector, mode, width) {
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, _default);
 
     this.mode = mode || 'right';
-    this.boxWidth = 0;
+    this.width = width || 0;
     this.hookWidth = 30;
     this.windowWidth = 0;
     this._scrollWidth = false;
@@ -190,19 +190,15 @@ var _default = /*#__PURE__*/function () {
     key: "connectElement",
     value: function connectElement(selector) {
       this.element = document.querySelector(selector);
-      this.element.style.willChange = 'transform';
+      this.element.style.height = '100%'; //this.element.style.willChange = 'transform';
+
       this.element.style.top = '0';
       this.element.style.zIndex = '9999';
       this.element.style.position = 'fixed';
-      this.boxWidth = Number(this.element.style.width.replace(/[^\d]+/g, ""));
       this.windowWidth = window.innerWidth - this.scrollWidth();
-
-      if (this.boxWidth === 0) {
-        this.boxWidth = this.boxWidth || this.windowWidth;
-        this.element.style.width = this.boxWidth + 'px';
-      }
-
-      this.element.style[this.mode] = -this.boxWidth + 'px';
+      this.width = this.width || this.windowWidth;
+      this.element.style.width = this.width + 'px';
+      this.element.style[this.mode] = -this.width + 'px';
     }
   }, {
     key: "createHook",
@@ -223,14 +219,6 @@ var _default = /*#__PURE__*/function () {
       this.element.append(hook);
     }
   }, {
-    key: "open",
-    value: function open() {
-      this.element.style.transition = 'transform .15s ease-in-out';
-      setTimeout(function () {
-        this.element.style.transition = '';
-      }, 200);
-    }
-  }, {
     key: "swipe",
     value: function swipe() {
       var self = this;
@@ -245,20 +233,20 @@ var _default = /*#__PURE__*/function () {
 
       swipe.drag = function (e) {
         this.preventDefault(e);
-        target.style.transition = 'none';
         var xCurrent = this.get('xCurrent');
-        var boxLeft = Math.floor(target.getBoundingClientRect().left);
+        var boxLeft = Math.floor(target.getBoundingClientRect().left) - (self.windowWidth - self.width);
 
         if (self.mode === 'right') {
           switch (this.currentDirection) {
             case 'left':
               {
-                if (boxLeft > self.windowWidth - self.boxWidth && self.windowWidth >= boxLeft) {
-                  this.preventDefault(e);
-                  target.style.transition = 'none';
+                console.log(boxLeft);
 
-                  if (-xCurrent > self.boxWidth) {
-                    xCurrent = -self.boxWidth;
+                if (boxLeft > 0 && self.width >= boxLeft) {
+                  this.preventDefault(e);
+
+                  if (-xCurrent > self.width) {
+                    xCurrent = -self.width;
                   } else if (xCurrent > 0) {
                     xCurrent = 0;
                   }
@@ -271,14 +259,13 @@ var _default = /*#__PURE__*/function () {
 
             case 'right':
               {
-                if (boxLeft >= self.windowWidth - self.boxWidth && self.windowWidth > boxLeft) {
+                if (self.windowWidth > boxLeft) {
                   this.preventDefault(e);
-                  target.style.transition = 'none';
 
                   if (-xCurrent < 0) {
                     xCurrent = 0;
-                  } else if (-xCurrent > self.boxWidth) {
-                    xCurrent = -self.boxWidth;
+                  } else if (-xCurrent > self.width) {
+                    xCurrent = -self.width;
                   }
 
                   target.style.transform = 'translateX(' + xCurrent + 'px)';
@@ -292,8 +279,8 @@ var _default = /*#__PURE__*/function () {
             case 'right':
               {
                 if (boxLeft < 0) {
-                  if (xCurrent > self.boxWidth) {
-                    xCurrent = self.boxWidth;
+                  if (xCurrent > self.width) {
+                    xCurrent = self.width;
                   } else if (xCurrent <= 0) {
                     xCurrent = 0;
                   }
@@ -306,9 +293,9 @@ var _default = /*#__PURE__*/function () {
 
             case 'left':
               {
-                if (-boxLeft < self.boxWidth) {
-                  if (xCurrent > self.boxWidth) {
-                    xCurrent = self.boxWidth;
+                if (-boxLeft < self.windowWidth) {
+                  if (xCurrent > self.width) {
+                    xCurrent = self.width;
                   } else if (xCurrent < 0) {
                     xCurrent = 0;
                   }
@@ -324,14 +311,21 @@ var _default = /*#__PURE__*/function () {
 
       swipe.stop = function () {
         var boxLeft = Math.floor(target.getBoundingClientRect().left);
-        target.style.transition = 'transform .15s ease-in-out';
 
         if (self.mode === 'right') {
+          boxLeft = boxLeft - (self.windowWidth - self.width);
+
           switch (this.currentDirection) {
             case 'left':
               {
-                if (boxLeft < self.boxWidth) {
-                  target.style.transform = 'translateX(-' + self.boxWidth + 'px)';
+                if (boxLeft < self.width) {
+                  var variable = self.width - boxLeft;
+                  var animate = setInterval(function () {
+                    variable = variable + 7;
+                    if (variable >= self.width) clearInterval(animate);
+                    variable = variable > self.width ? self.width : variable;
+                    target.style.transform = 'translateX(-' + variable + 'px)';
+                  }, 1);
                 } else {
                   target.style.transform = 'translateX(0px)';
                 }
@@ -341,10 +335,17 @@ var _default = /*#__PURE__*/function () {
 
             case 'right':
               {
-                if (boxLeft > (self.windowWidth - self.boxWidth) * 2) {
-                  target.style.transform = 'translateX(0px)';
+                if (boxLeft > 0) {
+                  var _variable = self.width - boxLeft;
+
+                  var _animate = setInterval(function () {
+                    _variable = _variable - 7;
+                    if (_variable <= 0) clearInterval(_animate);
+                    _variable = _variable < 0 ? 0 : _variable;
+                    target.style.transform = 'translateX(-' + _variable + 'px)';
+                  }, 1);
                 } else {
-                  target.style.transform = 'translateX(-' + self.boxWidth + 'px)';
+                  target.style.transform = "translateX(-".concat(self.width, "px)");
                 }
 
                 break;
@@ -354,8 +355,15 @@ var _default = /*#__PURE__*/function () {
           switch (this.currentDirection) {
             case 'right':
               {
-                if (boxLeft > self.windowWidth - self.boxWidth * 2) {
-                  target.style.transform = 'translateX(' + self.boxWidth + 'px)';
+                if (-boxLeft < self.width) {
+                  var _variable2 = self.width + boxLeft;
+
+                  var _animate2 = setInterval(function () {
+                    _variable2 = _variable2 + 7;
+                    if (_variable2 >= self.width) clearInterval(_animate2);
+                    _variable2 = _variable2 > self.width ? self.width : _variable2;
+                    target.style.transform = 'translateX(' + _variable2 + 'px)';
+                  }, 1);
                 } else {
                   target.style.transform = 'translateX(0px)';
                 }
@@ -365,20 +373,23 @@ var _default = /*#__PURE__*/function () {
 
             case 'left':
               {
-                if (boxLeft < self.boxWidth - self.windowWidth) {
-                  target.style.transform = 'translateX(0px)';
+                if (boxLeft < 0) {
+                  var _variable3 = self.width + boxLeft;
+
+                  var _animate3 = setInterval(function () {
+                    _variable3 = _variable3 - 7;
+                    if (_variable3 <= 0) clearInterval(_animate3);
+                    _variable3 = _variable3 < 0 ? 0 : _variable3;
+                    target.style.transform = 'translateX(' + _variable3 + 'px)';
+                  }, 1);
                 } else {
-                  target.style.transform = 'translateX(' + self.boxWidth + 'px)';
+                  target.style.transform = 'translateX(' + self.width + 'px)';
                 }
 
                 break;
               }
           }
         }
-
-        setTimeout(function () {
-          target.style.transition = '';
-        }, 200);
       };
     }
   }, {
