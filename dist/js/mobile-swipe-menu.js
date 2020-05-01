@@ -1,6 +1,6 @@
 /**
  * @package        mobile-swipe-menu
- * @version        1.0.2
+ * @version        1.0.3
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
  * @copyright      2020 mobile-swipe-menu
@@ -173,27 +173,31 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _default = /*#__PURE__*/function () {
-  function _default(selector, mode, width) {
+  function _default(selector, _ref) {
+    var mode = _ref.mode,
+        width = _ref.width,
+        hookWidth = _ref.hookWidth;
+
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, _default);
 
     this.mode = mode || 'right';
     this.width = width || 0;
-    this.hookWidth = 30;
+    this.hookWidth = hookWidth || 30;
     this.windowWidth = 0;
     this._scrollWidth = false;
+    this.isOpened = false;
     this.connectElement(selector);
     this.createHook();
-    this.swipe(selector);
+    this.init(selector);
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(_default, [{
     key: "connectElement",
     value: function connectElement(selector) {
       this.element = document.querySelector(selector);
-      this.element.style.height = '100%'; //this.element.style.willChange = 'transform';
-
+      this.element.style.height = '100%';
       this.element.style.top = '0';
-      this.element.style.zIndex = '9999';
+      this.element.style.zIndex = '1000';
       this.element.style.position = 'fixed';
       this.windowWidth = window.innerWidth - this.scrollWidth();
       this.width = this.width || this.windowWidth;
@@ -210,17 +214,73 @@ var _default = /*#__PURE__*/function () {
       hook.style.position = 'absolute';
 
       if (this.mode === 'right') {
-        hook.style.left = '-30px';
+        hook.style.left = "-".concat(this.hookWidth, "px");
       } else {
-        hook.style.right = '-30px';
+        hook.style.right = "-".concat(this.hookWidth, "px");
       }
 
       hook.style.cursor = 'pointer';
       this.element.append(hook);
     }
   }, {
-    key: "swipe",
-    value: function swipe() {
+    key: "openRightMenu",
+    value: function openRightMenu() {
+      var _this = this;
+
+      var variable = this.width - Math.floor(this.element.getBoundingClientRect().left);
+      var animate = setInterval(function () {
+        variable = variable + 7;
+        if (variable >= _this.width) clearInterval(animate);
+        variable = variable > _this.width ? _this.width : variable;
+        _this.element.style.transform = "translateX(-".concat(variable, "px)");
+      }, 1);
+      this.isOpened = true;
+    }
+  }, {
+    key: "closeRightMenu",
+    value: function closeRightMenu() {
+      var _this2 = this;
+
+      var variable = this.width - Math.floor(this.element.getBoundingClientRect().left);
+      var animate = setInterval(function () {
+        variable = variable - 7;
+        if (variable <= 0) clearInterval(animate);
+        variable = variable < 0 ? 0 : variable;
+        _this2.element.style.transform = "translateX(-".concat(variable, "px)");
+      }, 1);
+      this.isOpened = false;
+    }
+  }, {
+    key: "openLeftMenu",
+    value: function openLeftMenu() {
+      var _this3 = this;
+
+      var variable = this.width + Math.floor(this.element.getBoundingClientRect().left);
+      var animate = setInterval(function () {
+        variable = variable + 7;
+        if (variable >= _this3.width) clearInterval(animate);
+        variable = variable > _this3.width ? _this3.width : variable;
+        _this3.element.style.transform = "translateX(".concat(variable, "px)");
+      }, 1);
+      this.isOpened = true;
+    }
+  }, {
+    key: "closeLeftMenu",
+    value: function closeLeftMenu() {
+      var _this4 = this;
+
+      var variable = this.width + Math.floor(this.element.getBoundingClientRect().left);
+      var animate = setInterval(function () {
+        variable = variable - 7;
+        if (variable <= 0) clearInterval(animate);
+        variable = variable < 0 ? 0 : variable;
+        _this4.element.style.transform = "translateX(".concat(variable, "px)");
+      }, 1);
+      this.isOpened = false;
+    }
+  }, {
+    key: "init",
+    value: function init() {
       var self = this;
       var target = this.element;
       var swipe = new _swipe__WEBPACK_IMPORTED_MODULE_2__["Swipe"](target);
@@ -240,8 +300,6 @@ var _default = /*#__PURE__*/function () {
           switch (this.currentDirection) {
             case 'left':
               {
-                console.log(boxLeft);
-
                 if (boxLeft > 0 && self.width >= boxLeft) {
                   this.preventDefault(e);
 
@@ -319,13 +377,7 @@ var _default = /*#__PURE__*/function () {
             case 'left':
               {
                 if (boxLeft < self.width) {
-                  var variable = self.width - boxLeft;
-                  var animate = setInterval(function () {
-                    variable = variable + 7;
-                    if (variable >= self.width) clearInterval(animate);
-                    variable = variable > self.width ? self.width : variable;
-                    target.style.transform = 'translateX(-' + variable + 'px)';
-                  }, 1);
+                  self.openRightMenu();
                 } else {
                   target.style.transform = 'translateX(0px)';
                 }
@@ -336,14 +388,7 @@ var _default = /*#__PURE__*/function () {
             case 'right':
               {
                 if (boxLeft > 0) {
-                  var _variable = self.width - boxLeft;
-
-                  var _animate = setInterval(function () {
-                    _variable = _variable - 7;
-                    if (_variable <= 0) clearInterval(_animate);
-                    _variable = _variable < 0 ? 0 : _variable;
-                    target.style.transform = 'translateX(-' + _variable + 'px)';
-                  }, 1);
+                  self.closeRightMenu();
                 } else {
                   target.style.transform = "translateX(-".concat(self.width, "px)");
                 }
@@ -356,14 +401,7 @@ var _default = /*#__PURE__*/function () {
             case 'right':
               {
                 if (-boxLeft < self.width) {
-                  var _variable2 = self.width + boxLeft;
-
-                  var _animate2 = setInterval(function () {
-                    _variable2 = _variable2 + 7;
-                    if (_variable2 >= self.width) clearInterval(_animate2);
-                    _variable2 = _variable2 > self.width ? self.width : _variable2;
-                    target.style.transform = 'translateX(' + _variable2 + 'px)';
-                  }, 1);
+                  self.openLeftMenu();
                 } else {
                   target.style.transform = 'translateX(0px)';
                 }
@@ -374,16 +412,9 @@ var _default = /*#__PURE__*/function () {
             case 'left':
               {
                 if (boxLeft < 0) {
-                  var _variable3 = self.width + boxLeft;
-
-                  var _animate3 = setInterval(function () {
-                    _variable3 = _variable3 - 7;
-                    if (_variable3 <= 0) clearInterval(_animate3);
-                    _variable3 = _variable3 < 0 ? 0 : _variable3;
-                    target.style.transform = 'translateX(' + _variable3 + 'px)';
-                  }, 1);
+                  self.closeLeftMenu();
                 } else {
-                  target.style.transform = 'translateX(' + self.width + 'px)';
+                  target.style.transform = "'translateX(".concat(self.width, "px)'");
                 }
 
                 break;
@@ -408,6 +439,33 @@ var _default = /*#__PURE__*/function () {
       }
 
       return result;
+    }
+  }, {
+    key: "open",
+    value: function open() {
+      if (this.mode === 'right') {
+        this.openRightMenu();
+      } else {
+        this.openLeftMenu();
+      }
+    }
+  }, {
+    key: "close",
+    value: function close() {
+      if (this.mode === 'right') {
+        this.closeRightMenu();
+      } else {
+        this.closeLeftMenu();
+      }
+    }
+  }, {
+    key: "toggle",
+    value: function toggle() {
+      if (this.isOpened) {
+        this.close();
+      } else {
+        this.open();
+      }
     }
   }]);
 

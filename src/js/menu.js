@@ -2,23 +2,23 @@ import {Swipe} from "./swipe";
 
 export default class {
 
-    constructor(selector, mode, width) {
+    constructor(selector, {mode, width, hookWidth}) {
         this.mode = mode || 'right';
         this.width = width || 0;
-        this.hookWidth = 30;
+        this.hookWidth = hookWidth || 30;
         this.windowWidth = 0;
         this._scrollWidth = false;
+        this.isOpened = false;
         this.connectElement(selector);
         this.createHook();
-        this.swipe(selector);
+        this.init(selector);
     }
 
     connectElement(selector) {
         this.element = document.querySelector(selector);
         this.element.style.height = '100%';
-        //this.element.style.willChange = 'transform';
         this.element.style.top = '0';
-        this.element.style.zIndex = '9999';
+        this.element.style.zIndex = '1000';
         this.element.style.position = 'fixed';
         this.windowWidth = window.innerWidth - this.scrollWidth();
         this.width = this.width || this.windowWidth;
@@ -33,15 +33,56 @@ export default class {
         hook.style.top = '0';
         hook.style.position = 'absolute';
         if (this.mode === 'right') {
-            hook.style.left = '-30px';
+            hook.style.left = `-${this.hookWidth}px`;
         } else {
-            hook.style.right = '-30px';
+            hook.style.right = `-${this.hookWidth}px`;
         }
         hook.style.cursor = 'pointer';
         this.element.append(hook);
     }
 
-    swipe() {
+    openRightMenu() {
+        let variable = this.width - Math.floor(this.element.getBoundingClientRect().left);
+        const animate = setInterval(() => {
+            variable = variable + 7;
+            if (variable >= this.width) clearInterval(animate);
+            variable = variable > this.width ? this.width : variable;
+            this.element.style.transform = `translateX(-${variable}px)`;
+        }, 1);
+        this.isOpened = true;
+    }
+    closeRightMenu() {
+        let variable = this.width - Math.floor(this.element.getBoundingClientRect().left);
+        const animate = setInterval(() => {
+            variable = variable - 7;
+            if (variable <= 0) clearInterval(animate);
+            variable = variable < 0 ? 0 : variable;
+            this.element.style.transform = `translateX(-${variable}px)`;
+        }, 1);
+        this.isOpened = false;
+    }
+    openLeftMenu() {
+        let variable = this.width + Math.floor(this.element.getBoundingClientRect().left);
+        const animate = setInterval(() => {
+            variable = variable + 7;
+            if (variable >= this.width) clearInterval(animate);
+            variable = variable > this.width ? this.width : variable;
+            this.element.style.transform = `translateX(${variable}px)`;
+        }, 1);
+        this.isOpened = true;
+    }
+    closeLeftMenu() {
+        let variable = this.width + Math.floor(this.element.getBoundingClientRect().left);
+        const animate = setInterval(() => {
+            variable = variable - 7;
+            if (variable <= 0) clearInterval(animate);
+            variable = variable < 0 ? 0 : variable;
+            this.element.style.transform = `translateX(${variable}px)`;
+        }, 1);
+        this.isOpened = false;
+    }
+
+    init() {
         const self = this;
         const target = this.element;
         const swipe = new Swipe(target);
@@ -59,11 +100,7 @@ export default class {
             if (self.mode === 'right') {
                 switch (this.currentDirection) {
                     case 'left': {
-                        console.log(boxLeft);
-                        if (
-                            boxLeft > 0 &&
-                            self.width >= boxLeft
-                        ) {
+                        if (boxLeft > 0 && self.width >= boxLeft) {
                             this.preventDefault(e);
                             if (-xCurrent > self.width) {
                                 xCurrent = -self.width;
@@ -121,13 +158,7 @@ export default class {
                 switch (this.currentDirection) {
                     case 'left': {
                         if (boxLeft < self.width) {
-                            let variable = self.width - boxLeft;
-                            const animate = setInterval(() => {
-                                variable = variable + 7;
-                                if (variable >= self.width) clearInterval(animate);
-                                variable = variable > self.width ? self.width : variable;
-                                target.style.transform = 'translateX(-' + variable + 'px)';
-                            }, 1);
+                            self.openRightMenu();
                         } else {
                             target.style.transform = 'translateX(0px)';
                         }
@@ -135,13 +166,7 @@ export default class {
                     }
                     case 'right': {
                         if (boxLeft > 0) {
-                            let variable = self.width - boxLeft;
-                            const animate = setInterval(() => {
-                                variable = variable - 7;
-                                if (variable <= 0) clearInterval(animate);
-                                variable = variable < 0 ? 0 : variable;
-                                target.style.transform = 'translateX(-' + variable + 'px)';
-                            }, 1);
+                            self.closeRightMenu();
                         } else {
                             target.style.transform = `translateX(-${self.width}px)`;
                         }
@@ -152,13 +177,7 @@ export default class {
                 switch (this.currentDirection) {
                     case 'right': {
                         if (-boxLeft < self.width) {
-                            let variable = self.width + boxLeft;
-                            const animate = setInterval(() => {
-                                variable = variable + 7;
-                                if (variable >= self.width) clearInterval(animate);
-                                variable = variable > self.width ? self.width : variable;
-                                target.style.transform = 'translateX(' + variable + 'px)';
-                            }, 1);
+                            self.openLeftMenu();
                         } else {
                             target.style.transform = 'translateX(0px)';
                         }
@@ -166,15 +185,9 @@ export default class {
                     }
                     case 'left': {
                         if (boxLeft < 0) {
-                            let variable = self.width + boxLeft;
-                            const animate = setInterval(() => {
-                                variable = variable - 7;
-                                if (variable <= 0) clearInterval(animate);
-                                variable = variable < 0 ? 0 : variable;
-                                target.style.transform = 'translateX(' + variable + 'px)';
-                            }, 1);
+                            self.closeLeftMenu();
                         } else {
-                            target.style.transform = 'translateX(' + self.width + 'px)';
+                            target.style.transform = `'translateX(${self.width}px)'`;
                         }
                         break;
                     }
@@ -186,7 +199,7 @@ export default class {
     scrollWidth() {
         const result = this._scrollWidth;
         if (result === false) {
-            var div = document.createElement('div');
+            const div = document.createElement('div');
             div.style.overflowY = 'scroll';
             div.style.width = '50px';
             div.style.height = '50px';
@@ -195,5 +208,27 @@ export default class {
             div.remove();
         }
         return result;
-    };
+    }
+
+    open() {
+        if (this.mode === 'right') {
+            this.openRightMenu();
+        } else {
+            this.openLeftMenu();
+        }
+    }
+    close() {
+        if (this.mode === 'right') {
+            this.closeRightMenu();
+        } else {
+            this.closeLeftMenu();
+        }
+    }
+    toggle() {
+        if (this.isOpened) {
+            this.close();
+        } else {
+            this.open();
+        }
+    }
 }

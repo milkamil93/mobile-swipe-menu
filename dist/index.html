@@ -10,17 +10,49 @@
         }
         #menu > div:not(.wrapper) {
             background-color: #eee;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
         .wrapper {
             width: 100%;
             height: 100%;
             overflow-y: auto;
+            position: relative;
             -webkit-overflow-scrolling: touch;
+        }
+        #openMenu {
+            position: absolute;
+            top: 0;
+            right: 15px;
+            color: #fff;
+            padding: 5px 10px;
+            background-color: #000;
+        }
+        #closeMenu {
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: #fff;
+            z-index: 1;
+            padding: 5px 10px;
+            background-color: #000!important;
+        }
+        #toggleMenu {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            z-index: 1001;
         }
     </style>
 </head>
 <body>
+    <div id="openMenu">Open menu</div>
     <div id="menu">
+        <div id="closeMenu">Close menu</div>
         <div class="wrapper">
             <ul>
                 <li><a href="javascript:void(0)">Item menu</a></li>
@@ -56,13 +88,23 @@
             </ul>
         </div>
     </div>
+    <div id="toggleMenu">Toggle menu</div>
     <script src="js/mobile-swipe-menu.js"></script>
     <script>
-        new MobileSwipeMenu(
-            '#menu',
-            'right',
-            (window.innerWidth / 1.15)
-        )
+        var mobileMenu = new MobileSwipeMenu('#menu', {
+            mode: 'right',
+            width: window.innerWidth / 1.15,
+            hookWidth: 15
+        });
+        document.getElementById('openMenu').addEventListener('click', function () {
+            mobileMenu.open();
+        });
+        document.getElementById('closeMenu').addEventListener('click', function () {
+            mobileMenu.close();
+        });
+        document.getElementById('toggleMenu').addEventListener('click', function () {
+            mobileMenu.toggle();
+        });
     </script>
 </body>
 </html>
