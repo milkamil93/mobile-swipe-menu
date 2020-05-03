@@ -1,1 +1,1 @@
-module.exports = require("./src/js/menu.js");
+module.exports = require('./src/js/menu.js').default;
