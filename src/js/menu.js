@@ -42,44 +42,31 @@ export default class {
     }
 
     openRightMenu() {
-        let variable = this.width - Math.floor(this.element.getBoundingClientRect().left);
-        const animate = setInterval(() => {
-            variable = variable + 7;
-            if (variable >= this.width) clearInterval(animate);
-            variable = variable > this.width ? this.width : variable;
-            this.element.style.transform = `translateX(-${variable}px)`;
-        }, 1);
+        this.transition();
+        this.element.style.transform = `translateX(-${this.width}px)`;
         this.isOpened = true;
     }
     closeRightMenu() {
-        let variable = this.width - Math.floor(this.element.getBoundingClientRect().left);
-        const animate = setInterval(() => {
-            variable = variable - 7;
-            if (variable <= 0) clearInterval(animate);
-            variable = variable < 0 ? 0 : variable;
-            this.element.style.transform = `translateX(-${variable}px)`;
-        }, 1);
+        this.transition();
+        this.element.style.transform = 'translateX(0px)';
         this.isOpened = false;
     }
     openLeftMenu() {
-        let variable = this.width + Math.floor(this.element.getBoundingClientRect().left);
-        const animate = setInterval(() => {
-            variable = variable + 7;
-            if (variable >= this.width) clearInterval(animate);
-            variable = variable > this.width ? this.width : variable;
-            this.element.style.transform = `translateX(${variable}px)`;
-        }, 1);
+        this.transition();
+        this.element.style.transform = `translateX(${this.width}px)`;
         this.isOpened = true;
     }
     closeLeftMenu() {
-        let variable = this.width + Math.floor(this.element.getBoundingClientRect().left);
-        const animate = setInterval(() => {
-            variable = variable - 7;
-            if (variable <= 0) clearInterval(animate);
-            variable = variable < 0 ? 0 : variable;
-            this.element.style.transform = `translateX(${variable}px)`;
-        }, 1);
+        this.transition();
+        this.element.style.transform = 'translateX(0px)';
         this.isOpened = false;
+    }
+
+    transition() {
+        this.element.style.transitionDuration = '300ms';
+        setTimeout(() => {
+            this.element.style.transitionDuration = '0ms';
+        }, 200);
     }
 
     init() {

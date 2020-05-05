@@ -1,6 +1,6 @@
 /**
  * @package        mobile-swipe-menu
- * @version        1.0.3
+ * @version        1.1.1
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
  * @copyright      2020 mobile-swipe-menu
@@ -225,58 +225,40 @@ var _default = /*#__PURE__*/function () {
   }, {
     key: "openRightMenu",
     value: function openRightMenu() {
-      var _this = this;
-
-      var variable = this.width - Math.floor(this.element.getBoundingClientRect().left);
-      var animate = setInterval(function () {
-        variable = variable + 7;
-        if (variable >= _this.width) clearInterval(animate);
-        variable = variable > _this.width ? _this.width : variable;
-        _this.element.style.transform = "translateX(-".concat(variable, "px)");
-      }, 1);
+      this.transition();
+      this.element.style.transform = "translateX(-".concat(this.width, "px)");
       this.isOpened = true;
     }
   }, {
     key: "closeRightMenu",
     value: function closeRightMenu() {
-      var _this2 = this;
-
-      var variable = this.width - Math.floor(this.element.getBoundingClientRect().left);
-      var animate = setInterval(function () {
-        variable = variable - 7;
-        if (variable <= 0) clearInterval(animate);
-        variable = variable < 0 ? 0 : variable;
-        _this2.element.style.transform = "translateX(-".concat(variable, "px)");
-      }, 1);
+      this.transition();
+      this.element.style.transform = 'translateX(0px)';
       this.isOpened = false;
     }
   }, {
     key: "openLeftMenu",
     value: function openLeftMenu() {
-      var _this3 = this;
-
-      var variable = this.width + Math.floor(this.element.getBoundingClientRect().left);
-      var animate = setInterval(function () {
-        variable = variable + 7;
-        if (variable >= _this3.width) clearInterval(animate);
-        variable = variable > _this3.width ? _this3.width : variable;
-        _this3.element.style.transform = "translateX(".concat(variable, "px)");
-      }, 1);
+      this.transition();
+      this.element.style.transform = "translateX(".concat(this.width, "px)");
       this.isOpened = true;
     }
   }, {
     key: "closeLeftMenu",
     value: function closeLeftMenu() {
-      var _this4 = this;
-
-      var variable = this.width + Math.floor(this.element.getBoundingClientRect().left);
-      var animate = setInterval(function () {
-        variable = variable - 7;
-        if (variable <= 0) clearInterval(animate);
-        variable = variable < 0 ? 0 : variable;
-        _this4.element.style.transform = "translateX(".concat(variable, "px)");
-      }, 1);
+      this.transition();
+      this.element.style.transform = 'translateX(0px)';
       this.isOpened = false;
+    }
+  }, {
+    key: "transition",
+    value: function transition() {
+      var _this = this;
+
+      this.element.style.transitionDuration = '300ms';
+      setTimeout(function () {
+        _this.element.style.transitionDuration = '0ms';
+      }, 200);
     }
   }, {
     key: "init",
