@@ -1,6 +1,6 @@
 /**
  * @package        mobile-swipe-menu
- * @version        1.1.1
+ * @version        1.1.2
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
  * @copyright      2020 mobile-swipe-menu
@@ -149,7 +149,7 @@ module.exports = _createClass;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _menu__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./menu */ "./src/js/menu.js");
 
-window.MobileSwipeMenu = _menu__WEBPACK_IMPORTED_MODULE_0__["default"];
+window.mobileSwipeMenu = _menu__WEBPACK_IMPORTED_MODULE_0__["default"];
 
 /***/ }),
 
@@ -173,19 +173,30 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var _default = /*#__PURE__*/function () {
-  function _default(selector, _ref) {
-    var mode = _ref.mode,
-        width = _ref.width,
-        hookWidth = _ref.hookWidth;
+  function _default(selector) {
+    var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+        _ref$mode = _ref.mode,
+        mode = _ref$mode === void 0 ? 'right' : _ref$mode,
+        _ref$width = _ref.width,
+        width = _ref$width === void 0 ? 0 : _ref$width,
+        _ref$hookWidth = _ref.hookWidth,
+        hookWidth = _ref$hookWidth === void 0 ? 30 : _ref$hookWidth,
+        _ref$events = _ref.events,
+        events = _ref$events === void 0 ? {} : _ref$events;
 
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, _default);
 
-    this.mode = mode || 'right';
-    this.width = width || 0;
-    this.hookWidth = hookWidth || 30;
+    this.mode = mode;
+    this.width = width;
+    this.hookWidth = hookWidth;
     this.windowWidth = 0;
     this._scrollWidth = false;
     this.isOpened = false;
+    this.events = Object.assign({
+      opening: function opening() {},
+      closing: function closing() {},
+      drag: function drag() {}
+    }, events);
     this.connectElement(selector);
     this.createHook();
     this.init(selector);
@@ -228,6 +239,7 @@ var _default = /*#__PURE__*/function () {
       this.transition();
       this.element.style.transform = "translateX(-".concat(this.width, "px)");
       this.isOpened = true;
+      this.events.opening.bind(this)();
     }
   }, {
     key: "closeRightMenu",
@@ -235,6 +247,7 @@ var _default = /*#__PURE__*/function () {
       this.transition();
       this.element.style.transform = 'translateX(0px)';
       this.isOpened = false;
+      this.events.closing.bind(this)();
     }
   }, {
     key: "openLeftMenu",
@@ -242,6 +255,7 @@ var _default = /*#__PURE__*/function () {
       this.transition();
       this.element.style.transform = "translateX(".concat(this.width, "px)");
       this.isOpened = true;
+      this.events.opening.bind(this)();
     }
   }, {
     key: "closeLeftMenu",
@@ -249,6 +263,7 @@ var _default = /*#__PURE__*/function () {
       this.transition();
       this.element.style.transform = 'translateX(0px)';
       this.isOpened = false;
+      this.events.closing.bind(this)();
     }
   }, {
     key: "transition",
@@ -274,6 +289,7 @@ var _default = /*#__PURE__*/function () {
       };
 
       swipe.drag = function (e) {
+        self.events.drag.bind(self)(this);
         this.preventDefault(e);
         var xCurrent = this.get('xCurrent');
         var boxLeft = Math.floor(target.getBoundingClientRect().left) - (self.windowWidth - self.width);

@@ -1,6 +1,6 @@
 # Mobile Swipe Menu
 Swipe Menu with Vanilla JS for mobile
-###### Demo: https://mobileswipemenu.todowell.ru
+###### Demo: https://mobileSwipeMenu.todowell.ru
 
 ## Instruction
 ### Installation
@@ -9,7 +9,7 @@ npm i mobile-swipe-menu --save
 ```
 ### Using
 ```
-new MobileSwipeMenu(selector, options)
+new mobileSwipeMenu(selector, options)
 ```
 ### Options
 ```
@@ -21,11 +21,19 @@ hookWidth - protrusion width
 ```
 open, close, toggle
 ```
+### Events
+```
+events: {
+    opening: function () {},
+    closing: function () {},
+    drag: function (swipe) {}
+}
+```
 ### Example
 #### ES6
 ```
-import MobileSwipeMenu from 'mobile-swipe-menu';
-new MobileSwipeMenu('#menu', {
+import mobileSwipeMenu from 'mobile-swipe-menu';
+new mobileSwipeMenu('#menu', {
     mode: 'right',
     width: window.innerWidth / 1.15
 });
@@ -34,10 +42,21 @@ new MobileSwipeMenu('#menu', {
 ```
 <script src="js/mobile-swipe-menu.min.js"></script>
 <script>
-    var mobileMenu = new MobileSwipeMenu('#menu', {
+    var mobileMenu = new mobileSwipeMenu('#menu', {
         mode: 'right',
-        width: 300,
-        hookWidth: 15
+        width: window.innerWidth / 1.15,
+        hookWidth: 15,
+        events: {
+            opening: function () {
+                console.log(this, 'Opened');
+            },
+            closing: function () {
+                console.log(this, 'Closed');
+            },
+            drag: function (swipe) {
+                console.log(this, swipe);
+            }
+        }
     });
     document.getElementById('openMenu').addEventListener('click', function () {
         mobileMenu.open();

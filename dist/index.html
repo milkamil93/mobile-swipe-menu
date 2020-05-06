@@ -91,10 +91,21 @@
     <div id="toggleMenu">Toggle menu</div>
     <script src="js/mobile-swipe-menu.js"></script>
     <script>
-        var mobileMenu = new MobileSwipeMenu('#menu', {
+        var mobileMenu = new mobileSwipeMenu('#menu', {
             mode: 'right',
             width: window.innerWidth / 1.15,
-            hookWidth: 15
+            hookWidth: 15,
+            events: {
+                opening: function () {
+                    console.log(this, 'Opened');
+                },
+                closing: function () {
+                    console.log(this, 'Closed');
+                },
+                drag: function (swipe) {
+                    console.log(this, swipe);
+                }
+            }
         });
         document.getElementById('openMenu').addEventListener('click', function () {
             mobileMenu.open();

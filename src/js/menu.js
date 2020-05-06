@@ -2,13 +2,18 @@ import {Swipe} from "./swipe";
 
 export default class {
 
-    constructor(selector, {mode, width, hookWidth}) {
-        this.mode = mode || 'right';
-        this.width = width || 0;
-        this.hookWidth = hookWidth || 30;
+    constructor(selector, {mode = 'right', width = 0, hookWidth = 30, events = {}} = {}) {
+        this.mode = mode;
+        this.width = width;
+        this.hookWidth = hookWidth;
         this.windowWidth = 0;
         this._scrollWidth = false;
         this.isOpened = false;
+        this.events = Object.assign({
+            opening: () => {},
+            closing: () => {},
+            drag: () => {}
+        }, events);
         this.connectElement(selector);
         this.createHook();
         this.init(selector);
@@ -45,21 +50,25 @@ export default class {
         this.transition();
         this.element.style.transform = `translateX(-${this.width}px)`;
         this.isOpened = true;
+        this.events.opening.bind(this)();
     }
     closeRightMenu() {
         this.transition();
         this.element.style.transform = 'translateX(0px)';
         this.isOpened = false;
+        this.events.closing.bind(this)();
     }
     openLeftMenu() {
         this.transition();
         this.element.style.transform = `translateX(${this.width}px)`;
         this.isOpened = true;
+        this.events.opening.bind(this)();
     }
     closeLeftMenu() {
         this.transition();
         this.element.style.transform = 'translateX(0px)';
         this.isOpened = false;
+        this.events.closing.bind(this)();
     }
 
     transition() {
@@ -79,6 +88,8 @@ export default class {
             if (matrix) this.set('xStart', toucheX - matrix);
         };
         swipe.drag = function (e) {
+            self.events.drag.bind(self)(this);
+
             this.preventDefault(e);
 
             let xCurrent = this.get('xCurrent');
