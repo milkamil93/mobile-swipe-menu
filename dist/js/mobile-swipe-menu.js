@@ -1,6 +1,6 @@
 /**
  * @package        mobile-swipe-menu
- * @version        1.1.2
+ * @version        1.1.3
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
  * @copyright      2020 mobile-swipe-menu
@@ -174,24 +174,24 @@ __webpack_require__.r(__webpack_exports__);
 
 var _default = /*#__PURE__*/function () {
   function _default(selector) {
-    var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-        _ref$mode = _ref.mode,
-        mode = _ref$mode === void 0 ? 'right' : _ref$mode,
-        _ref$width = _ref.width,
-        width = _ref$width === void 0 ? 0 : _ref$width,
-        _ref$hookWidth = _ref.hookWidth,
-        hookWidth = _ref$hookWidth === void 0 ? 30 : _ref$hookWidth,
-        _ref$windowHook = _ref.windowHook,
-        windowHook = _ref$windowHook === void 0 ? false : _ref$windowHook,
-        _ref$events = _ref.events,
-        events = _ref$events === void 0 ? {} : _ref$events;
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, _default);
 
+    var _options$mode = options.mode,
+        mode = _options$mode === void 0 ? 'right' : _options$mode,
+        _options$width = options.width,
+        width = _options$width === void 0 ? 0 : _options$width,
+        _options$hookWidth = options.hookWidth,
+        hookWidth = _options$hookWidth === void 0 ? 30 : _options$hookWidth,
+        _options$enableWindow = options.enableWindowHook,
+        enableWindowHook = _options$enableWindow === void 0 ? false : _options$enableWindow,
+        _options$events = options.events,
+        events = _options$events === void 0 ? {} : _options$events;
     this.mode = mode;
     this.width = width;
     this.hookWidth = hookWidth;
-    this.windowHook = windowHook;
+    this.enableWindowHook = enableWindowHook;
     this.windowWidth = 0;
     this._scrollWidth = false;
     this.isOpened = false;
@@ -201,7 +201,11 @@ var _default = /*#__PURE__*/function () {
       drag: function drag() {}
     }, events);
     this.connectElement(selector);
-    this.createHook();
+
+    if (!enableWindowHook) {
+      this.createHook();
+    }
+
     this.init();
   }
 
@@ -283,12 +287,16 @@ var _default = /*#__PURE__*/function () {
     value: function init() {
       var self = this;
       var target = this.element;
-      var swipe = new _swipe__WEBPACK_IMPORTED_MODULE_2__["Swipe"](target);
+      var hookTarget = this.enableWindowHook ? window : this.element;
+      var swipe = new _swipe__WEBPACK_IMPORTED_MODULE_2__["Swipe"](hookTarget);
 
       swipe.start = function (e) {
-        var matrix = new WebKitCSSMatrix(getComputedStyle(target).transform).m41,
-            toucheX = this.getTouches(e).offsetX;
-        if (matrix) this.set('xStart', toucheX - matrix);
+        var matrix = new WebKitCSSMatrix(getComputedStyle(target).transform).m41;
+        var toucheX = this.getTouches(e).offsetX;
+
+        if (matrix) {
+          this.set('xStart', toucheX - matrix);
+        }
       };
 
       swipe.drag = function (e) {
