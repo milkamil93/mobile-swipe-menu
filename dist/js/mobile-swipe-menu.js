@@ -186,11 +186,14 @@ var _default = /*#__PURE__*/function () {
         hookWidth = _options$hookWidth === void 0 ? 30 : _options$hookWidth,
         _options$enableWindow = options.enableWindowHook,
         enableWindowHook = _options$enableWindow === void 0 ? false : _options$enableWindow,
+        _options$parentWidth = options.parentWidth,
+        parentWidth = _options$parentWidth === void 0 ? null : _options$parentWidth,
         _options$events = options.events,
         events = _options$events === void 0 ? {} : _options$events;
     this.mode = mode;
     this.width = width;
     this.hookWidth = hookWidth;
+    this.parentWidth = parentWidth;
     this.enableWindowHook = enableWindowHook;
     this.windowWidth = 0;
     this._scrollWidth = false;
@@ -217,7 +220,7 @@ var _default = /*#__PURE__*/function () {
       this.element.style.top = '0';
       this.element.style.zIndex = '1000';
       this.element.style.position = 'fixed';
-      this.windowWidth = window.innerWidth - this.scrollWidth();
+      this.windowWidth = this.parentWidth || window.innerWidth - this.scrollWidth();
       this.width = this.width || this.windowWidth;
       this.element.style.width = this.width + 'px';
       this.element.style[this.mode] = -this.width + 'px';

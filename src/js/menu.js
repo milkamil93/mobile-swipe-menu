@@ -2,10 +2,11 @@ import {Swipe} from './swipe'
 
 export default class {
     constructor(selector, options = {}) {
-        const {mode = 'right', width = 0, hookWidth = 30, enableWindowHook = false, events = {}} = options
+        const {mode = 'right', width = 0, hookWidth = 30, enableWindowHook = false, parentWidth = null, events = {}} = options
         this.mode = mode
         this.width = width
         this.hookWidth = hookWidth
+        this.parentWidth = parentWidth
         this.enableWindowHook = enableWindowHook
         this.windowWidth = 0
         this._scrollWidth = false
@@ -31,7 +32,7 @@ export default class {
         this.element.style.top = '0'
         this.element.style.zIndex = '1000'
         this.element.style.position = 'fixed'
-        this.windowWidth = window.innerWidth - this.scrollWidth()
+        this.windowWidth = this.parentWidth || window.innerWidth - this.scrollWidth()
         this.width = this.width || this.windowWidth
         this.element.style.width = this.width + 'px'
         this.element.style[this.mode] = -this.width + 'px'
