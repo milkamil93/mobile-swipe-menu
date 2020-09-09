@@ -1,2 +1,2 @@
 import Menu from "./menu";
-window.mobileSwipeMenu = Menu;
+window.MobileSwipeMenu = Menu;

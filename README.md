@@ -1,6 +1,6 @@
 # Mobile Swipe Menu
 Swipe Menu with Vanilla JS for mobile
-###### Demo: https://mobileSwipeMenu.todowell.ru
+###### Demo: https://MobileSwipeMenu.todowell.ru
 
 ## Instruction
 ### Installation
@@ -9,13 +9,14 @@ npm i mobile-swipe-menu --save
 ```
 ### Using
 ```
-new mobileSwipeMenu(selector, options)
+new MobileSwipeMenu(selector, options)
 ```
 ### Options
 ```
 mode - operating mode (right, left)
 width - menu width
 hookWidth - protrusion width
+enableWindowHook - react to the whole window
 ```
 ### Methods
 ```
@@ -32,8 +33,8 @@ events: {
 ### Example
 #### ES6
 ```
-import mobileSwipeMenu from 'mobile-swipe-menu';
-new mobileSwipeMenu('#menu', {
+import MobileSwipeMenu from 'mobile-swipe-menu';
+new MobileSwipeMenu('#menu', {
     mode: 'right',
     width: window.innerWidth / 1.15
 });
@@ -42,7 +43,7 @@ new mobileSwipeMenu('#menu', {
 ```
 <script src="js/mobile-swipe-menu.min.js"></script>
 <script>
-    var mobileMenu = new mobileSwipeMenu('#menu', {
+    var mobileMenu = new MobileSwipeMenu('#menu', {
         mode: 'right',
         width: window.innerWidth / 1.15,
         hookWidth: 15,

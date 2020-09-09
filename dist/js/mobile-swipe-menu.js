@@ -149,7 +149,7 @@ module.exports = _createClass;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _menu__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./menu */ "./src/js/menu.js");
 
-window.mobileSwipeMenu = _menu__WEBPACK_IMPORTED_MODULE_0__["default"];
+window.MobileSwipeMenu = _menu__WEBPACK_IMPORTED_MODULE_0__["default"];
 
 /***/ }),
 
@@ -181,6 +181,8 @@ var _default = /*#__PURE__*/function () {
         width = _ref$width === void 0 ? 0 : _ref$width,
         _ref$hookWidth = _ref.hookWidth,
         hookWidth = _ref$hookWidth === void 0 ? 30 : _ref$hookWidth,
+        _ref$windowHook = _ref.windowHook,
+        windowHook = _ref$windowHook === void 0 ? false : _ref$windowHook,
         _ref$events = _ref.events,
         events = _ref$events === void 0 ? {} : _ref$events;
 
@@ -189,6 +191,7 @@ var _default = /*#__PURE__*/function () {
     this.mode = mode;
     this.width = width;
     this.hookWidth = hookWidth;
+    this.windowHook = windowHook;
     this.windowWidth = 0;
     this._scrollWidth = false;
     this.isOpened = false;
@@ -199,13 +202,13 @@ var _default = /*#__PURE__*/function () {
     }, events);
     this.connectElement(selector);
     this.createHook();
-    this.init(selector);
+    this.init();
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(_default, [{
     key: "connectElement",
     value: function connectElement(selector) {
-      this.element = document.querySelector(selector);
+      this.element = typeof selector === 'string' ? document.querySelector(selector) : selector;
       this.element.style.height = '100%';
       this.element.style.top = '0';
       this.element.style.zIndex = '1000';
