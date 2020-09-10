@@ -1,6 +1,6 @@
 /**
  * @package        mobile-swipe-menu
- * @version        1.1.4
+ * @version        2.0.1
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
  * @copyright      2020 mobile-swipe-menu
