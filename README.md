@@ -16,7 +16,7 @@ new MobileSwipeMenu(selector, options)
 mode - operating mode (right, left)
 width - menu width
 hookWidth - protrusion width
-enableWindowHook - react to the whole window
+enableBodyHook - react to the whole window
 parentWidth
 ```
 ### Methods

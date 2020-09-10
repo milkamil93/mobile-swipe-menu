@@ -1,13 +1,12 @@
 import {Swipe} from './swipe'
 
 export default class {
-    constructor(selector, options = {}) {
-        const {mode = 'right', width = 0, hookWidth = 30, enableWindowHook = false, parentWidth = null, events = {}} = options
+    constructor (selector, options = {}) {
+        const {mode = 'right', width = 0, hookWidth = 30, enableBodyHook = false, events = {}} = options
         this.mode = mode
         this.width = width
         this.hookWidth = hookWidth
-        this.parentWidth = parentWidth
-        this.enableWindowHook = enableWindowHook
+        this.enableBodyHook = enableBodyHook
         this.windowWidth = 0
         this._scrollWidth = false
         this.isOpened = false
@@ -20,25 +19,25 @@ export default class {
             }
         }, events)
         this.connectElement(selector)
-        if (!enableWindowHook) {
+        if (!enableBodyHook) {
             this.createHook()
         }
         this.init()
     }
 
-    connectElement(selector) {
+    connectElement (selector) {
         this.element = typeof selector === 'string' ? document.querySelector(selector) : selector
         this.element.style.height = '100%'
         this.element.style.top = '0'
         this.element.style.zIndex = '1000'
         this.element.style.position = 'fixed'
-        this.windowWidth = this.parentWidth || window.innerWidth - this.scrollWidth()
+        this.windowWidth = window.innerWidth - this.scrollWidth()
         this.width = this.width || this.windowWidth
         this.element.style.width = this.width + 'px'
         this.element.style[this.mode] = -this.width + 'px'
     }
 
-    createHook() {
+    createHook () {
         const hook = document.createElement('div')
         hook.style.width = this.hookWidth + 'px'
         hook.style.height = '100%'
@@ -53,45 +52,47 @@ export default class {
         this.element.append(hook)
     }
 
-    openRightMenu() {
+    openRightMenu () {
         this.transition()
         this.element.style.transform = `translateX(-${this.width}px)`
         this.isOpened = true
         this.events.opening.bind(this)()
     }
 
-    closeRightMenu() {
+    closeRightMenu () {
         this.transition()
         this.element.style.transform = 'translateX(0px)'
         this.isOpened = false
         this.events.closing.bind(this)()
     }
 
-    openLeftMenu() {
+    openLeftMenu () {
         this.transition()
         this.element.style.transform = `translateX(${this.width}px)`
         this.isOpened = true
         this.events.opening.bind(this)()
     }
 
-    closeLeftMenu() {
+    closeLeftMenu () {
         this.transition()
         this.element.style.transform = 'translateX(0px)'
         this.isOpened = false
         this.events.closing.bind(this)()
     }
 
-    transition() {
+    transition () {
         this.element.style.transitionDuration = '300ms'
         setTimeout(() => {
             this.element.style.transitionDuration = '0ms'
         }, 200)
     }
 
-    init() {
+    init () {
         const self = this
         const target = this.element
-        const hookTarget = this.enableWindowHook ? window : this.element
+        const hookTarget = this.enableBodyHook ? document.body : this.element
+        hookTarget.style['touch-action'] = 'pan-y'
+        hookTarget.style['-ms-touch-action'] = 'pan-y'
         const swipe = new Swipe(hookTarget)
         swipe.start = function (e) {
             const matrix = new WebKitCSSMatrix(getComputedStyle(target).transform).m41
@@ -101,8 +102,15 @@ export default class {
             }
         }
         swipe.drag = function (e) {
+            if (['left', 'right'].indexOf(this.currentDirection) >= 0 && e.type === 'touchmove') {
+                e.stopImmediatePropagation()
+                e.stopPropagation()
+                if (e.cancelable) {
+                    e.preventDefault()
+                }
+            }
+
             self.events.drag.bind(self)(this)
-            this.preventDefault(e)
             let xCurrent = this.get('xCurrent')
             let boxLeft = Math.floor(target.getBoundingClientRect().left) - (self.windowWidth - self.width)
 
@@ -110,7 +118,6 @@ export default class {
                 switch (this.currentDirection) {
                     case 'left': {
                         if (boxLeft > 0 && self.width >= boxLeft) {
-                            this.preventDefault(e)
                             if (-xCurrent > self.width) {
                                 xCurrent = -self.width
                             } else if (xCurrent > 0) {
@@ -122,13 +129,12 @@ export default class {
                     }
                     case 'right': {
                         if (self.windowWidth > boxLeft) {
-                            this.preventDefault(e)
                             if (-xCurrent < 0) {
                                 xCurrent = 0
                             } else if (-xCurrent > self.width) {
                                 xCurrent = -self.width
                             }
-                            target.style.transform = 'translateX(' + xCurrent + 'px)'
+                            target.style.transform = `translateX(${xCurrent}px)`
                         }
                         break
                     }
@@ -142,7 +148,7 @@ export default class {
                             } else if (xCurrent <= 0) {
                                 xCurrent = 0
                             }
-                            target.style.transform = 'translateX(' + xCurrent + 'px)'
+                            target.style.transform = ` 'translateX(${xCurrent}px)'`
                         }
                         break
                     }
@@ -153,7 +159,7 @@ export default class {
                             } else if (xCurrent < 0) {
                                 xCurrent = 0
                             }
-                            target.style.transform = 'translateX(' + xCurrent + 'px)'
+                            target.style.transform = ` 'translateX(${xCurrent}px)'`
                         }
                         break
                     }
@@ -205,7 +211,7 @@ export default class {
         }
     }
 
-    scrollWidth() {
+    scrollWidth () {
         const result = this._scrollWidth
         if (result === false) {
             const div = document.createElement('div')
@@ -219,7 +225,7 @@ export default class {
         return result
     }
 
-    open() {
+    open () {
         if (this.mode === 'right') {
             this.openRightMenu()
         } else {
@@ -227,7 +233,7 @@ export default class {
         }
     }
 
-    close() {
+    close () {
         if (this.mode === 'right') {
             this.closeRightMenu()
         } else {
@@ -235,7 +241,7 @@ export default class {
         }
     }
 
-    toggle() {
+    toggle () {
         if (this.isOpened) {
             this.close()
         } else {

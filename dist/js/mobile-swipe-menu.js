@@ -1,6 +1,6 @@
 /**
  * @package        mobile-swipe-menu
- * @version        1.1.3
+ * @version        1.1.4
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
  * @copyright      2020 mobile-swipe-menu
@@ -184,17 +184,14 @@ var _default = /*#__PURE__*/function () {
         width = _options$width === void 0 ? 0 : _options$width,
         _options$hookWidth = options.hookWidth,
         hookWidth = _options$hookWidth === void 0 ? 30 : _options$hookWidth,
-        _options$enableWindow = options.enableWindowHook,
-        enableWindowHook = _options$enableWindow === void 0 ? false : _options$enableWindow,
-        _options$parentWidth = options.parentWidth,
-        parentWidth = _options$parentWidth === void 0 ? null : _options$parentWidth,
+        _options$enableBodyHo = options.enableBodyHook,
+        enableBodyHook = _options$enableBodyHo === void 0 ? false : _options$enableBodyHo,
         _options$events = options.events,
         events = _options$events === void 0 ? {} : _options$events;
     this.mode = mode;
     this.width = width;
     this.hookWidth = hookWidth;
-    this.parentWidth = parentWidth;
-    this.enableWindowHook = enableWindowHook;
+    this.enableBodyHook = enableBodyHook;
     this.windowWidth = 0;
     this._scrollWidth = false;
     this.isOpened = false;
@@ -205,7 +202,7 @@ var _default = /*#__PURE__*/function () {
     }, events);
     this.connectElement(selector);
 
-    if (!enableWindowHook) {
+    if (!enableBodyHook) {
       this.createHook();
     }
 
@@ -220,7 +217,7 @@ var _default = /*#__PURE__*/function () {
       this.element.style.top = '0';
       this.element.style.zIndex = '1000';
       this.element.style.position = 'fixed';
-      this.windowWidth = this.parentWidth || window.innerWidth - this.scrollWidth();
+      this.windowWidth = window.innerWidth - this.scrollWidth();
       this.width = this.width || this.windowWidth;
       this.element.style.width = this.width + 'px';
       this.element.style[this.mode] = -this.width + 'px';
@@ -290,7 +287,9 @@ var _default = /*#__PURE__*/function () {
     value: function init() {
       var self = this;
       var target = this.element;
-      var hookTarget = this.enableWindowHook ? window : this.element;
+      var hookTarget = this.enableBodyHook ? document.body : this.element;
+      hookTarget.style['touch-action'] = 'pan-y';
+      hookTarget.style['-ms-touch-action'] = 'pan-y';
       var swipe = new _swipe__WEBPACK_IMPORTED_MODULE_2__["Swipe"](hookTarget);
 
       swipe.start = function (e) {
@@ -303,8 +302,16 @@ var _default = /*#__PURE__*/function () {
       };
 
       swipe.drag = function (e) {
+        if (['left', 'right'].indexOf(this.currentDirection) >= 0 && e.type === 'touchmove') {
+          e.stopImmediatePropagation();
+          e.stopPropagation();
+
+          if (e.cancelable) {
+            e.preventDefault();
+          }
+        }
+
         self.events.drag.bind(self)(this);
-        this.preventDefault(e);
         var xCurrent = this.get('xCurrent');
         var boxLeft = Math.floor(target.getBoundingClientRect().left) - (self.windowWidth - self.width);
 
@@ -313,8 +320,6 @@ var _default = /*#__PURE__*/function () {
             case 'left':
               {
                 if (boxLeft > 0 && self.width >= boxLeft) {
-                  this.preventDefault(e);
-
                   if (-xCurrent > self.width) {
                     xCurrent = -self.width;
                   } else if (xCurrent > 0) {
@@ -330,15 +335,13 @@ var _default = /*#__PURE__*/function () {
             case 'right':
               {
                 if (self.windowWidth > boxLeft) {
-                  this.preventDefault(e);
-
                   if (-xCurrent < 0) {
                     xCurrent = 0;
                   } else if (-xCurrent > self.width) {
                     xCurrent = -self.width;
                   }
 
-                  target.style.transform = 'translateX(' + xCurrent + 'px)';
+                  target.style.transform = "translateX(".concat(xCurrent, "px)");
                 }
 
                 break;
@@ -355,7 +358,7 @@ var _default = /*#__PURE__*/function () {
                     xCurrent = 0;
                   }
 
-                  target.style.transform = 'translateX(' + xCurrent + 'px)';
+                  target.style.transform = " 'translateX(".concat(xCurrent, "px)'");
                 }
 
                 break;
@@ -370,7 +373,7 @@ var _default = /*#__PURE__*/function () {
                     xCurrent = 0;
                   }
 
-                  target.style.transform = 'translateX(' + xCurrent + 'px)';
+                  target.style.transform = " 'translateX(".concat(xCurrent, "px)'");
                 }
 
                 break;
@@ -537,12 +540,14 @@ var Swipe = /*#__PURE__*/function () {
   }, {
     key: "eventListener",
     value: function eventListener(element) {
-      element.addEventListener('mousedown', this.handleTouchStart.bind(this), false);
-      element.addEventListener('touchstart', this.handleTouchStart.bind(this), false);
-      element.addEventListener('mousemove', this.handleTouchMove.bind(this), false);
-      element.addEventListener('touchmove', this.handleTouchMove.bind(this), false);
-      element.addEventListener('mouseup', this.handleTouchEnd.bind(this), false);
-      element.addEventListener('touchend', this.handleTouchEnd.bind(this), false);
+      element.addEventListener('mousedown', this.handleTouchStart.bind(this));
+      element.addEventListener('touchstart', this.handleTouchStart.bind(this));
+      element.addEventListener('mousemove', this.handleTouchMove.bind(this));
+      element.addEventListener('touchmove', this.handleTouchMove.bind(this), {
+        passive: false
+      });
+      element.addEventListener('mouseup', this.handleTouchEnd.bind(this));
+      element.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
   }, {
     key: "getTouches",
@@ -554,11 +559,11 @@ var Swipe = /*#__PURE__*/function () {
       var touch = e.touches ? e.touches[0] : e.originalEvent ? e.originalEvent.touches[0] : false;
 
       if (touch) {
-        result.offsetX = touch.clientX;
-        result.offsetY = touch.clientY;
+        result.offsetX = Math.round(touch.clientX);
+        result.offsetY = Math.round(touch.clientY);
       } else {
-        result.offsetX = e.clientX;
-        result.offsetY = e.clientY;
+        result.offsetX = Math.round(e.clientX);
+        result.offsetY = Math.round(e.clientY);
       }
 
       return result;
@@ -577,15 +582,33 @@ var Swipe = /*#__PURE__*/function () {
   }, {
     key: "handleTouchMove",
     value: function handleTouchMove(e) {
-      if (!this.get('inWork')) return false;
+      if (!this.get('inWork')) {
+        return false;
+      }
+
       var touche = this.getTouches(e);
       this.set('xCurrent', touche.offsetX - this.get('xStart'));
       this.set('yCurrent', touche.offsetY - this.get('yStart'));
-      this.drag(e);
-      if (!this.get('xDown') || !this.get('yDown')) return false;
       var xDiff = this.get('xDown') - touche.offsetX;
       var yDiff = this.get('yDown') - touche.offsetY;
 
+      if (!this.get('currentDirection')) {
+        this.setDirection(e, xDiff, yDiff);
+      }
+
+      this.drag(e);
+
+      if (!this.get('xDown') || !this.get('yDown')) {
+        return false;
+      }
+
+      this.setDirection(e, xDiff, yDiff);
+      this.set('xDown', null);
+      this.set('yDown', null);
+    }
+  }, {
+    key: "setDirection",
+    value: function setDirection(e, xDiff, yDiff) {
       if (Math.abs(xDiff) > Math.abs(yDiff)) {
         if (xDiff > 0) {
           this.set('currentDirection', 'left');
@@ -603,9 +626,6 @@ var Swipe = /*#__PURE__*/function () {
           this.down(e);
         }
       }
-
-      this.set('xDown', null);
-      this.set('yDown', null);
     }
   }, {
     key: "handleTouchEnd",
@@ -614,20 +634,10 @@ var Swipe = /*#__PURE__*/function () {
       this.stop(e);
     }
   }, {
-    key: "preventDefault",
-    value: function preventDefault(e) {
-      if (e.type === 'touchmove') {
-        e.stopImmediatePropagation();
-      } else {
-        e.preventDefault();
-      }
-    }
-  }, {
     key: "drag",
     value: function drag(e) {
-      this.preventDefault(e);
       e.target.style.transition = 'none';
-      e.target.style.transform = 'translate(' + this.get('xCurrent') + 'px, ' + this.get('yCurrent') + 'px)';
+      e.target.style.transform = "translate(".concat(this.get('xCurrent'), "px, ").concat(this.get('yCurrent'), "px)");
     }
   }, {
     key: "left",
