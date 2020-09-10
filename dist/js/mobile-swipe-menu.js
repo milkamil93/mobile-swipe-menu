@@ -1,6 +1,6 @@
 /**
  * @package        mobile-swipe-menu
- * @version        2.0.1
+ * @version        2.0.2
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
  * @copyright      2020 mobile-swipe-menu
@@ -288,6 +288,7 @@ var _default = /*#__PURE__*/function () {
       var self = this;
       var target = this.element;
       var hookTarget = this.enableBodyHook ? document.body : this.element;
+      hookTarget.style['cursor'] = 'auto';
       hookTarget.style['touch-action'] = 'pan-y';
       hookTarget.style['-ms-touch-action'] = 'pan-y';
       var swipe = new _swipe__WEBPACK_IMPORTED_MODULE_2__["Swipe"](hookTarget);

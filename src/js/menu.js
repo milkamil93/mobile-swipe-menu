@@ -91,6 +91,7 @@ export default class {
         const self = this
         const target = this.element
         const hookTarget = this.enableBodyHook ? document.body : this.element
+        hookTarget.style['cursor'] = 'auto'
         hookTarget.style['touch-action'] = 'pan-y'
         hookTarget.style['-ms-touch-action'] = 'pan-y'
         const swipe = new Swipe(hookTarget)
