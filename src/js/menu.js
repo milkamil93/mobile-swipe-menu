@@ -11,6 +11,10 @@ export default class {
         this._scrollWidth = false
         this.isOpened = false
         this.events = Object.assign({
+            start: () => {
+            },
+            stop: () => {
+            },
             opening: () => {
             },
             closing: () => {
@@ -101,6 +105,7 @@ export default class {
             if (matrix) {
                 this.set('xStart', toucheX - matrix)
             }
+            self.events.start.bind(self)(this)
         }
         swipe.drag = function (e) {
             if (['left', 'right'].indexOf(this.currentDirection) >= 0 && e.type === 'touchmove') {
@@ -209,6 +214,7 @@ export default class {
                     }
                 }
             }
+            self.events.stop.bind(self)(this)
         }
     }
 

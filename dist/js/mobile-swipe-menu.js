@@ -1,6 +1,6 @@
 /**
  * @package        mobile-swipe-menu
- * @version        2.0.2
+ * @version        2.0.3
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
  * @copyright      2020 mobile-swipe-menu
@@ -196,6 +196,8 @@ var _default = /*#__PURE__*/function () {
     this._scrollWidth = false;
     this.isOpened = false;
     this.events = Object.assign({
+      start: function start() {},
+      stop: function stop() {},
       opening: function opening() {},
       closing: function closing() {},
       drag: function drag() {}
@@ -300,6 +302,8 @@ var _default = /*#__PURE__*/function () {
         if (matrix) {
           this.set('xStart', toucheX - matrix);
         }
+
+        self.events.start.bind(self)(this);
       };
 
       swipe.drag = function (e) {
@@ -437,6 +441,8 @@ var _default = /*#__PURE__*/function () {
               }
           }
         }
+
+        self.events.stop.bind(self)(this);
       };
     }
   }, {

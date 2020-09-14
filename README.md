@@ -26,6 +26,8 @@ open, close, toggle
 ### Events
 ```
 events: {
+    start: function () {},
+    stop: function () {},
     opening: function () {},
     closing: function () {},
     drag: function (swipe) {}
