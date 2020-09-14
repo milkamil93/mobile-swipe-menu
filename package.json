@@ -14,8 +14,12 @@
     "swipe",
     "menu",
     "vanillajs",
-    "plugin",
-    "swipemenu"
+    "library",
+    "swipemenu",
+    "slide",
+    "vanilla",
+    "mobile",
+    "without:jquery"
   ],
   "bugs": {
     "url": "https://github.com/milkamil93/mobile-swipe-menu/issues"
