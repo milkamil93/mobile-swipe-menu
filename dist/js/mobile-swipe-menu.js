@@ -1,6 +1,6 @@
 /**
  * @package        mobile-swipe-menu
- * @version        2.0.3
+ * @version        2.0.4
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
  * @copyright      2020 mobile-swipe-menu
@@ -190,6 +190,7 @@ var _default = /*#__PURE__*/function () {
         events = _options$events === void 0 ? {} : _options$events;
     this.mode = mode;
     this.width = width;
+    this.lock = false;
     this.hookWidth = hookWidth;
     this.enableBodyHook = enableBodyHook;
     this.windowWidth = 0;
@@ -296,6 +297,10 @@ var _default = /*#__PURE__*/function () {
       var swipe = new _swipe__WEBPACK_IMPORTED_MODULE_2__["Swipe"](hookTarget);
 
       swipe.start = function (e) {
+        if (self.lock) {
+          return false;
+        }
+
         var matrix = new WebKitCSSMatrix(getComputedStyle(target).transform).m41;
         var toucheX = this.getTouches(e).offsetX;
 
@@ -307,6 +312,10 @@ var _default = /*#__PURE__*/function () {
       };
 
       swipe.drag = function (e) {
+        if (self.lock) {
+          return false;
+        }
+
         if (['left', 'right'].indexOf(this.currentDirection) >= 0 && e.type === 'touchmove') {
           e.stopImmediatePropagation();
           e.stopPropagation();
@@ -388,6 +397,10 @@ var _default = /*#__PURE__*/function () {
       };
 
       swipe.stop = function () {
+        if (self.lock) {
+          return false;
+        }
+
         var boxLeft = Math.floor(target.getBoundingClientRect().left);
 
         if (self.mode === 'right') {

@@ -5,6 +5,7 @@ export default class {
         const {mode = 'right', width = 0, hookWidth = 30, enableBodyHook = false, events = {}} = options
         this.mode = mode
         this.width = width
+        this.lock = false
         this.hookWidth = hookWidth
         this.enableBodyHook = enableBodyHook
         this.windowWidth = 0
@@ -100,6 +101,9 @@ export default class {
         hookTarget.style['-ms-touch-action'] = 'pan-y'
         const swipe = new Swipe(hookTarget)
         swipe.start = function (e) {
+            if (self.lock) {
+                return false
+            }
             const matrix = new WebKitCSSMatrix(getComputedStyle(target).transform).m41
             const toucheX = this.getTouches(e).offsetX
             if (matrix) {
@@ -108,6 +112,9 @@ export default class {
             self.events.start.bind(self)(this)
         }
         swipe.drag = function (e) {
+            if (self.lock) {
+                return false
+            }
             if (['left', 'right'].indexOf(this.currentDirection) >= 0 && e.type === 'touchmove') {
                 e.stopImmediatePropagation()
                 e.stopPropagation()
@@ -173,6 +180,9 @@ export default class {
             }
         }
         swipe.stop = function () {
+            if (self.lock) {
+                return false
+            }
             let boxLeft = Math.floor(target.getBoundingClientRect().left)
             if (self.mode === 'right') {
                 boxLeft = boxLeft - (self.windowWidth - self.width)
