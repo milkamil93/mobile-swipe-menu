@@ -101,7 +101,7 @@ export default class {
         hookTarget.style['-ms-touch-action'] = 'pan-y'
         const swipe = new Swipe(hookTarget)
         swipe.start = function (e) {
-            if (self.lock) {
+            if (self.lock && !self.isOpened) {
                 return false
             }
             const matrix = new WebKitCSSMatrix(getComputedStyle(target).transform).m41
@@ -112,7 +112,7 @@ export default class {
             self.events.start.bind(self)(this)
         }
         swipe.drag = function (e) {
-            if (self.lock) {
+            if (self.lock && !self.isOpened) {
                 return false
             }
             if (['left', 'right'].indexOf(this.currentDirection) >= 0 && e.type === 'touchmove') {
@@ -180,7 +180,7 @@ export default class {
             }
         }
         swipe.stop = function () {
-            if (self.lock) {
+            if (self.lock && !self.isOpened) {
                 return false
             }
             let boxLeft = Math.floor(target.getBoundingClientRect().left)
