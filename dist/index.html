@@ -5,6 +5,16 @@
     <title>Mobile Swipe Menu with Vanilla JS</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1"/>
     <style>
+        body {
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            user-select: none;
+            -ms-user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
         #menu {
             background-color: #ccc;
         }
@@ -94,7 +104,7 @@
         var mobileMenu = new MobileSwipeMenu('#menu', {
             mode: 'right',
             width: window.innerWidth / 1.15,
-            enableWindowHook: true,
+            enableBodyHook: true,
             hookWidth: 15,
             events: {
                 opening: function () {
