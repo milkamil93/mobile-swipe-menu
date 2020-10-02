@@ -7,7 +7,7 @@
     <style>
         body {
             margin: 0;
-            width: 100vw;
+            width: 100%;
             height: 100vh;
             user-select: none;
             -ms-user-select: none;
@@ -32,7 +32,7 @@
         #openMenu {
             position: absolute;
             top: 0;
-            right: 15px;
+            right: 0;
             color: #fff;
             padding: 5px 10px;
             background-color: #000;
@@ -57,9 +57,47 @@
             text-align: center;
             z-index: 1001;
         }
+        .content {
+            padding: 30px;
+            font-size: 24px;
+            line-height: 1.4;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
+    <div class="content">
+        <p>
+            Lorem ipsum dolor sit amet, <br>
+            consectetur adipiscing elit, <br>
+            sed do eiusmod tempor incididunt <br>
+            ut labore et dolore magna aliqua. <br>
+            Ut enim ad minim veniam, quis <br>
+            nostrud exercitation ullamco laboris <br>
+            nisi ut aliquip ex ea commodo consequat. <br>
+            Duis aute irure dolor in reprehenderit in <br>
+            voluptate velit esse cillum dolore eu <br>
+            fugiat nulla pariatur. Excepteur sint <br>
+            occaecat cupidatat non proident, sunt <br>
+            in culpa qui officia deserunt mollit <br>
+            anim id est laborum.
+        </p>
+        <p>
+            Lorem ipsum dolor sit amet, <br>
+            consectetur adipiscing elit, <br>
+            sed do eiusmod tempor incididunt <br>
+            ut labore et dolore magna aliqua. <br>
+            Ut enim ad minim veniam, quis <br>
+            nostrud exercitation ullamco laboris <br>
+            nisi ut aliquip ex ea commodo consequat. <br>
+            Duis aute irure dolor in reprehenderit in <br>
+            voluptate velit esse cillum dolore eu <br>
+            fugiat nulla pariatur. Excepteur sint <br>
+            occaecat cupidatat non proident, sunt <br>
+            in culpa qui officia deserunt mollit <br>
+            anim id est laborum.
+        </p>
+    </div>
     <div id="openMenu">Open menu</div>
     <div id="menu">
         <div id="closeMenu">Close menu</div>
@@ -105,16 +143,12 @@
             mode: 'right',
             width: window.innerWidth / 1.15,
             enableBodyHook: true,
-            hookWidth: 15,
             events: {
                 opening: function () {
-                    //console.log(this, 'Opened');
                 },
                 closing: function () {
-                    //console.log(this, 'Closed');
                 },
                 drag: function (swipe) {
-                    //console.log(this, swipe);
                 }
             }
         });

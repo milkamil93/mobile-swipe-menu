@@ -1,6 +1,6 @@
 /**
  * @package        mobile-swipe-menu
- * @version        2.0.5
+ * @version        2.0.6
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
  * @copyright      2020 mobile-swipe-menu
@@ -193,7 +193,6 @@ var _default = /*#__PURE__*/function () {
     this.lock = false;
     this.hookWidth = hookWidth;
     this.enableBodyHook = enableBodyHook;
-    this.windowWidth = 0;
     this._scrollWidth = false;
     this.isOpened = false;
     this.events = Object.assign({
@@ -333,14 +332,14 @@ var _default = /*#__PURE__*/function () {
           switch (this.currentDirection) {
             case 'left':
               {
-                if (boxLeft > 0 && self.width >= boxLeft) {
+                if (self.width >= boxLeft) {
                   if (-xCurrent > self.width) {
                     xCurrent = -self.width;
                   } else if (xCurrent > 0) {
                     xCurrent = 0;
                   }
 
-                  target.style.transform = 'translateX(' + xCurrent + 'px)';
+                  target.style.transform = "translateX(".concat(xCurrent, "px)");
                 }
 
                 break;
@@ -372,7 +371,7 @@ var _default = /*#__PURE__*/function () {
                     xCurrent = 0;
                   }
 
-                  target.style.transform = " 'translateX(".concat(xCurrent, "px)'");
+                  target.style.transform = "translateX(".concat(xCurrent, "px)");
                 }
 
                 break;
@@ -380,16 +379,13 @@ var _default = /*#__PURE__*/function () {
 
             case 'left':
               {
-                if (-boxLeft < self.windowWidth) {
-                  if (xCurrent > self.width) {
-                    xCurrent = self.width;
-                  } else if (xCurrent < 0) {
-                    xCurrent = 0;
-                  }
-
-                  target.style.transform = " 'translateX(".concat(xCurrent, "px)'");
+                if (xCurrent >= self.width) {
+                  xCurrent = self.width;
+                } else if (xCurrent < 0) {
+                  xCurrent = 0;
                 }
 
+                target.style.transform = "translateX(".concat(xCurrent, "px)");
                 break;
               }
           }
@@ -410,7 +406,11 @@ var _default = /*#__PURE__*/function () {
             case 'left':
               {
                 if (boxLeft < self.width) {
-                  self.openRightMenu();
+                  if (boxLeft < self.width - 30) {
+                    self.openRightMenu();
+                  } else {
+                    self.closeRightMenu();
+                  }
                 } else {
                   target.style.transform = 'translateX(0px)';
                 }
@@ -421,7 +421,11 @@ var _default = /*#__PURE__*/function () {
             case 'right':
               {
                 if (boxLeft > 0) {
-                  self.closeRightMenu();
+                  if (boxLeft > 30) {
+                    self.closeRightMenu();
+                  } else {
+                    self.openRightMenu();
+                  }
                 } else {
                   target.style.transform = "translateX(-".concat(self.width, "px)");
                 }
@@ -434,7 +438,11 @@ var _default = /*#__PURE__*/function () {
             case 'right':
               {
                 if (-boxLeft < self.width) {
-                  self.openLeftMenu();
+                  if (-boxLeft < self.width - 30) {
+                    self.openLeftMenu();
+                  } else {
+                    self.closeLeftMenu();
+                  }
                 } else {
                   target.style.transform = 'translateX(0px)';
                 }
@@ -445,9 +453,13 @@ var _default = /*#__PURE__*/function () {
             case 'left':
               {
                 if (boxLeft < 0) {
-                  self.closeLeftMenu();
+                  if (boxLeft < -30) {
+                    self.closeLeftMenu();
+                  } else {
+                    self.openLeftMenu();
+                  }
                 } else {
-                  target.style.transform = "'translateX(".concat(self.width, "px)'");
+                  target.style.transform = "translateX(".concat(self.width, "px)");
                 }
 
                 break;
@@ -622,6 +634,7 @@ var Swipe = /*#__PURE__*/function () {
         return false;
       }
 
+      console.log(Math.abs(xDiff), Math.abs(yDiff), Math.abs(xDiff) >= Math.abs(yDiff) ? 'horizontal' : 'vertical');
       this.setDirection(e, xDiff, yDiff);
       this.set('xDown', null);
       this.set('yDown', null);
@@ -629,7 +642,7 @@ var Swipe = /*#__PURE__*/function () {
   }, {
     key: "setDirection",
     value: function setDirection(e, xDiff, yDiff) {
-      if (Math.abs(xDiff) > Math.abs(yDiff)) {
+      if (Math.abs(xDiff) >= Math.abs(yDiff)) {
         if (xDiff > 0) {
           this.set('currentDirection', 'left');
           this.left(e);

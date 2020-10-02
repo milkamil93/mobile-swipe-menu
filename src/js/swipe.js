@@ -84,6 +84,10 @@ export class Swipe {
             return false
         }
 
+        console.log(
+            Math.abs(xDiff), Math.abs(yDiff), Math.abs(xDiff) >= Math.abs(yDiff) ? 'horizontal' : 'vertical'
+        )
+
         this.setDirection(e, xDiff, yDiff)
 
         this.set('xDown', null)
@@ -91,7 +95,7 @@ export class Swipe {
     }
 
     setDirection (e, xDiff, yDiff) {
-        if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        if (Math.abs(xDiff) >= Math.abs(yDiff)) {
             if (xDiff > 0) {
                 this.set('currentDirection', 'left')
                 this.left(e)

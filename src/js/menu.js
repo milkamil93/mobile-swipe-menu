@@ -8,7 +8,6 @@ export default class {
         this.lock = false
         this.hookWidth = hookWidth
         this.enableBodyHook = enableBodyHook
-        this.windowWidth = 0
         this._scrollWidth = false
         this.isOpened = false
         this.events = Object.assign({
@@ -130,13 +129,13 @@ export default class {
             if (self.mode === 'right') {
                 switch (this.currentDirection) {
                     case 'left': {
-                        if (boxLeft > 0 && self.width >= boxLeft) {
+                        if (self.width >= boxLeft) {
                             if (-xCurrent > self.width) {
                                 xCurrent = -self.width
                             } else if (xCurrent > 0) {
                                 xCurrent = 0
                             }
-                            target.style.transform = 'translateX(' + xCurrent + 'px)'
+                            target.style.transform = `translateX(${xCurrent}px)`
                         }
                         break
                     }
@@ -161,19 +160,17 @@ export default class {
                             } else if (xCurrent <= 0) {
                                 xCurrent = 0
                             }
-                            target.style.transform = ` 'translateX(${xCurrent}px)'`
+                            target.style.transform = `translateX(${xCurrent}px)`
                         }
                         break
                     }
                     case 'left': {
-                        if (-boxLeft < self.windowWidth) {
-                            if (xCurrent > self.width) {
-                                xCurrent = self.width
-                            } else if (xCurrent < 0) {
-                                xCurrent = 0
-                            }
-                            target.style.transform = ` 'translateX(${xCurrent}px)'`
+                        if (xCurrent >= self.width) {
+                            xCurrent = self.width
+                        } else if (xCurrent < 0) {
+                            xCurrent = 0
                         }
+                        target.style.transform = `translateX(${xCurrent}px)`
                         break
                     }
                 }
@@ -189,7 +186,11 @@ export default class {
                 switch (this.currentDirection) {
                     case 'left': {
                         if (boxLeft < self.width) {
-                            self.openRightMenu()
+                            if (boxLeft < self.width - 30) {
+                                self.openRightMenu()
+                            } else {
+                                self.closeRightMenu()
+                            }
                         } else {
                             target.style.transform = 'translateX(0px)'
                         }
@@ -197,7 +198,11 @@ export default class {
                     }
                     case 'right': {
                         if (boxLeft > 0) {
-                            self.closeRightMenu()
+                            if (boxLeft > 30) {
+                                self.closeRightMenu()
+                            } else {
+                                self.openRightMenu()
+                            }
                         } else {
                             target.style.transform = `translateX(-${self.width}px)`
                         }
@@ -208,7 +213,11 @@ export default class {
                 switch (this.currentDirection) {
                     case 'right': {
                         if (-boxLeft < self.width) {
-                            self.openLeftMenu()
+                            if (-boxLeft < self.width - 30) {
+                                self.openLeftMenu()
+                            } else {
+                                self.closeLeftMenu()
+                            }
                         } else {
                             target.style.transform = 'translateX(0px)'
                         }
@@ -216,9 +225,13 @@ export default class {
                     }
                     case 'left': {
                         if (boxLeft < 0) {
-                            self.closeLeftMenu()
+                            if (boxLeft < -30) {
+                                self.closeLeftMenu()
+                            } else {
+                                self.openLeftMenu()
+                            }
                         } else {
-                            target.style.transform = `'translateX(${self.width}px)'`
+                            target.style.transform = `translateX(${self.width}px)`
                         }
                         break
                     }
