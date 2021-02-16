@@ -144,22 +144,22 @@
             width: window.innerWidth / 1.15,
             enableBodyHook: true,
             events: {
-                opening: function () {
+                opened: function () {
                 },
-                closing: function () {
+                closed: function () {
                 },
                 drag: function (swipe) {
                 }
             }
         });
         document.getElementById('openMenu').addEventListener('click', function () {
-            mobileMenu.open();
+            mobileMenu.openMenu();
         });
         document.getElementById('closeMenu').addEventListener('click', function () {
-            mobileMenu.close();
+            mobileMenu.closeMenu();
         });
         document.getElementById('toggleMenu').addEventListener('click', function () {
-            mobileMenu.toggle();
+            mobileMenu.toggleMenu();
         });
     </script>
 </body>

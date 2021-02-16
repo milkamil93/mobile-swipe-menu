@@ -2,38 +2,49 @@
 Swipe Menu with Vanilla JS for mobile
 ###### Demo: https://milkamil93.github.io/
 
+
 ## Instruction
+
 ### Installation
 ```
-npm i mobile-swipe-menu --save
+npm install mobile-swipe-menu --save
 ```
+
 ### Using
 ```
 new MobileSwipeMenu(selector, options)
 ```
+
 ### Options
-```
-mode - operating mode (right, left)
-width - menu width
-hookWidth - protrusion width
-enableBodyHook - react to the whole window
-parentWidth
-```
+| Name              | Type      | Default   | Description                   |
+| ---               | ---       | ---       | ---                           |
+| `mode`            | string    | right     | operating mode (right, left)  |
+| `width`           | number    | 0         | menu width                    |
+| `hookWidth`       | number    | 30        | protrusion width              |
+| `enableBodyHook`  | boolean   | false     | react to the whole window     |
+| `events`          | object    | {}        | event set object              |
+
 ### Methods
-```
-open, close, toggle
-```
+| Name              | Description           |
+| ---               | ---                   |
+| `openMenu`        | open the menu         |
+| `closeMenu`       | close the menu        |
+| `toggleMenu`      | open or close a menu  |
+| `disableSwipe`    | disable menu swipe    |
+| `enableSwipe`     | enable menu swipe     |
+
 ### Events
-```
-events: {
-    start: function () {},
-    stop: function () {},
-    opening: function () {},
-    closing: function () {},
-    drag: function (swipe) {}
-}
-```
+| Name              | Description           |
+| ---               | ---                   |
+| `start`           | starting swiping menu |
+| `stop`            | stopping swiping menu  |
+| `opened`          | menu is opened        |
+| `closed`          | menu is closed        |
+| `drag`            | the menu is swiping   |
+
+
 ### Example
+
 #### ES6
 ```
 import MobileSwipeMenu from 'mobile-swipe-menu';
@@ -42,6 +53,7 @@ new MobileSwipeMenu('#menu', {
     width: window.innerWidth / 1.15
 });
 ```
+
 #### OR
 ```
 <script src="js/mobile-swipe-menu.min.js"></script>
@@ -49,27 +61,24 @@ new MobileSwipeMenu('#menu', {
     var mobileMenu = new MobileSwipeMenu('#menu', {
         mode: 'right',
         width: window.innerWidth / 1.15,
-        hookWidth: 15,
+        enableBodyHook: true,
         events: {
-            opening: function () {
-                console.log(this, 'Opened');
+            opened: function () {
             },
-            closing: function () {
-                console.log(this, 'Closed');
+            closed: function () {
             },
             drag: function (swipe) {
-                console.log(this, swipe);
             }
         }
     });
     document.getElementById('openMenu').addEventListener('click', function () {
-        mobileMenu.open();
+        mobileMenu.openMenu();
     });
     document.getElementById('closeMenu').addEventListener('click', function () {
-        mobileMenu.close();
+        mobileMenu.closeMenu();
     });
     document.getElementById('toggleMenu').addEventListener('click', function () {
-        mobileMenu.toggle();
+        mobileMenu.toggleMenu();
     });
 </script>
 ```

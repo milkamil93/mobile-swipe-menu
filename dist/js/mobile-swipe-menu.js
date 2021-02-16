@@ -1,9 +1,9 @@
 /**
  * @package        mobile-swipe-menu
- * @version        2.0.6
+ * @version        2.1.0
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
- * @copyright      2020 mobile-swipe-menu
+ * @copyright      2021 mobile-swipe-menu
  * @license        GPL-3.0
  * @link           https://github.com/milkamil93/mobile-swipe-menu
 *//******/ (function(modules) { // webpackBootstrap
@@ -138,6 +138,32 @@ module.exports = _createClass;
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime/helpers/defineProperty.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/defineProperty.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+
+/***/ }),
+
 /***/ "./src/js/app.js":
 /*!***********************!*\
   !*** ./src/js/app.js ***!
@@ -167,16 +193,105 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _swipe__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./swipe */ "./src/js/swipe.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _swipe__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./swipe */ "./src/js/swipe.js");
+
 
 
 
 
 var _default = /*#__PURE__*/function () {
+  /**
+   * @description Operating mode. Possible values: `right`, `left`
+   * @type string
+   */
+
+  /**
+   * @deprecated Will be deleted in version 3.0. Use `disableSwipe` or `enableSwipe` methods instead.
+   * @description The status of whether the swipe will run.
+   * @type boolean
+   */
+
+  /**
+   * @description Menu width.
+   * @type number
+   * */
+
+  /**
+   * @description Side grip width. Does not work if `enableBodyHook` is enabled.
+   * @type number
+   * */
+
+  /**
+   * @description Capture mode. If enabled, the entire screen is taken into account.
+   * @type boolean
+   * */
+
+  /**
+   * @description Scrolling bar width.
+   * @types number, boolean
+   * */
+
+  /**
+   * @description Menu open status.
+   * @type boolean
+   * */
+
+  /**
+   * @description Event set.
+   * @type object
+   * */
+
+  /**
+   * @description Menu element in document.
+   * @type object
+   * */
+
+  /**
+   * @description Window width.
+   * @type number
+   * */
+
+  /**
+   * @constructor
+   * @param {string, object} selector - Menu element or selector in document.
+   * @param {object} options - Customization options.
+   * @param {string} options.mode - Operating mode. Possible values: right, left
+   * @param {number} options.width - Menu width.
+   * @param {number} options.hookWidth - Side grip width. Does not work if `enableBodyHook` is enabled.
+   * @param {boolean} options.enableBodyHook - Capture mode. If enabled, the entire screen is taken into account.
+   * @param {object} options.events - Event set.
+   * @param {function} options.events.start - Event starting swiping menu.
+   * @param {function} options.events.stop - Event stopping swiping menu.
+   * @param {function} options.events.opened - Event menu is opened.
+   * @param {function} options.events.closed - Event menu is closed.
+   * @param {function} options.events.drag - Event menu is swiping.
+   * */
   function _default(selector) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, _default);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_mode", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "lock", false);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_width", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_hookWidth", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_enableBodyHook", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_scrollWidth", false);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_isOpened", false);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_events", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_element", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_windowWidth", void 0);
 
     var _options$mode = options.mode,
         mode = _options$mode === void 0 ? 'right' : _options$mode,
@@ -188,115 +303,154 @@ var _default = /*#__PURE__*/function () {
         enableBodyHook = _options$enableBodyHo === void 0 ? false : _options$enableBodyHo,
         _options$events = options.events,
         events = _options$events === void 0 ? {} : _options$events;
-    this.mode = mode;
-    this.width = width;
-    this.lock = false;
-    this.hookWidth = hookWidth;
-    this.enableBodyHook = enableBodyHook;
-    this._scrollWidth = false;
-    this.isOpened = false;
-    this.events = Object.assign({
+    this._mode = mode;
+    this._width = width;
+    this._hookWidth = hookWidth;
+    this._enableBodyHook = enableBodyHook;
+    this._events = Object.assign({
       start: function start() {},
       stop: function stop() {},
-      opening: function opening() {},
-      closing: function closing() {},
+      opened: function opened() {},
+      closed: function closed() {},
       drag: function drag() {}
     }, events);
-    this.connectElement(selector);
+
+    this._connectElement(selector);
 
     if (!enableBodyHook) {
-      this.createHook();
+      this._createHook();
     }
 
-    this.init();
+    this._init();
   }
+  /**
+   * @description Creating a menu element in a document.
+   * @param {string, object} selector - Menu element or selector in document.
+   * */
+
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(_default, [{
-    key: "connectElement",
-    value: function connectElement(selector) {
-      this.element = typeof selector === 'string' ? document.querySelector(selector) : selector;
-      this.element.style.height = '100%';
-      this.element.style.top = '0';
-      this.element.style.zIndex = '1000';
-      this.element.style.position = 'fixed';
-      this.windowWidth = window.innerWidth - this.scrollWidth();
-      this.width = this.width || this.windowWidth;
-      this.element.style.width = this.width + 'px';
-      this.element.style[this.mode] = -this.width + 'px';
+    key: "_connectElement",
+    value: function _connectElement(selector) {
+      this._element = typeof selector === 'string' ? document.querySelector(selector) : selector;
+      this._element.style.height = '100%';
+      this._element.style.top = '0';
+      this._element.style.zIndex = '1000';
+      this._element.style.position = 'fixed';
+      this._windowWidth = window.innerWidth - this._getScrollWidth();
+      this._width = this._width || this._windowWidth;
+      this._element.style.width = this._width + 'px';
+      this._element.style[this._mode] = -this._width + 'px';
     }
+    /**
+     * @description Side grip creation.
+     * */
+
   }, {
-    key: "createHook",
-    value: function createHook() {
+    key: "_createHook",
+    value: function _createHook() {
       var hook = document.createElement('div');
-      hook.style.width = this.hookWidth + 'px';
+      hook.style.width = this._hookWidth + 'px';
       hook.style.height = '100%';
       hook.style.top = '0';
       hook.style.position = 'absolute';
+      hook.style.cursor = 'pointer';
 
-      if (this.mode === 'right') {
-        hook.style.left = "-".concat(this.hookWidth, "px");
+      if (this._mode === 'right') {
+        hook.style.left = "-".concat(this._hookWidth, "px");
       } else {
-        hook.style.right = "-".concat(this.hookWidth, "px");
+        hook.style.right = "-".concat(this._hookWidth, "px");
       }
 
-      hook.style.cursor = 'pointer';
-      this.element.append(hook);
+      this._element.append(hook);
     }
+    /**
+     * @description Opening the menu with mode `right`.
+     * */
+
   }, {
-    key: "openRightMenu",
-    value: function openRightMenu() {
-      this.transition();
-      this.element.style.transform = "translateX(-".concat(this.width, "px)");
-      this.isOpened = true;
-      this.events.opening.bind(this)();
+    key: "_openRightMenu",
+    value: function _openRightMenu() {
+      this._transition();
+
+      this._element.style.transform = "translateX(-".concat(this._width, "px)");
+      this._isOpened = true;
+
+      this._events.opened.bind(this)();
     }
+    /**
+     * @description Closing the menu with mode `right`.
+     * */
+
   }, {
-    key: "closeRightMenu",
-    value: function closeRightMenu() {
-      this.transition();
-      this.element.style.transform = 'translateX(0px)';
-      this.isOpened = false;
-      this.events.closing.bind(this)();
+    key: "_closeRightMenu",
+    value: function _closeRightMenu() {
+      this._transition();
+
+      this._element.style.transform = 'translateX(0px)';
+      this._isOpened = false;
+
+      this._events.closed.bind(this)();
     }
+    /**
+     * @description Opening the menu with mode `left`.
+     * */
+
   }, {
-    key: "openLeftMenu",
-    value: function openLeftMenu() {
-      this.transition();
-      this.element.style.transform = "translateX(".concat(this.width, "px)");
-      this.isOpened = true;
-      this.events.opening.bind(this)();
+    key: "_openLeftMenu",
+    value: function _openLeftMenu() {
+      this._transition();
+
+      this._element.style.transform = "translateX(".concat(this._width, "px)");
+      this._isOpened = true;
+
+      this._events.opened.bind(this)();
     }
+    /**
+     * @description Closing the menu with mode `left`.
+     * */
+
   }, {
-    key: "closeLeftMenu",
-    value: function closeLeftMenu() {
-      this.transition();
-      this.element.style.transform = 'translateX(0px)';
-      this.isOpened = false;
-      this.events.closing.bind(this)();
+    key: "_closeLeftMenu",
+    value: function _closeLeftMenu() {
+      this._transition();
+
+      this._element.style.transform = 'translateX(0px)';
+      this._isOpened = false;
+
+      this._events.closed.bind(this)();
     }
+    /**
+     * @description Smooth movement.
+     * */
+
   }, {
-    key: "transition",
-    value: function transition() {
+    key: "_transition",
+    value: function _transition() {
       var _this = this;
 
-      this.element.style.transitionDuration = '300ms';
+      this._element.style.transitionDuration = '300ms';
       setTimeout(function () {
-        _this.element.style.transitionDuration = '0ms';
+        _this._element.style.transitionDuration = '0ms';
       }, 200);
     }
+    /**
+     * @description Initialization.
+     * */
+
   }, {
-    key: "init",
-    value: function init() {
+    key: "_init",
+    value: function _init() {
       var self = this;
-      var target = this.element;
-      var hookTarget = this.enableBodyHook ? document.body : this.element;
+      var target = this._element;
+      var hookTarget = this._enableBodyHook ? document.body : this._element;
       hookTarget.style['cursor'] = 'auto';
       hookTarget.style['touch-action'] = 'pan-y';
       hookTarget.style['-ms-touch-action'] = 'pan-y';
-      var swipe = new _swipe__WEBPACK_IMPORTED_MODULE_2__["Swipe"](hookTarget);
+      var swipe = new _swipe__WEBPACK_IMPORTED_MODULE_3__["Swipe"](hookTarget);
 
       swipe.start = function (e) {
-        if (self.lock && !self.isOpened) {
+        if (self._lock && !self._isOpened) {
           return false;
         }
 
@@ -307,11 +461,11 @@ var _default = /*#__PURE__*/function () {
           this.set('xStart', toucheX - matrix);
         }
 
-        self.events.start.bind(self)(this);
+        self._events.start.bind(self)(this);
       };
 
       swipe.drag = function (e) {
-        if (self.lock && !self.isOpened) {
+        if (self._lock && !self._isOpened) {
           return false;
         }
 
@@ -324,17 +478,19 @@ var _default = /*#__PURE__*/function () {
           }
         }
 
-        self.events.drag.bind(self)(this);
-        var xCurrent = this.get('xCurrent');
-        var boxLeft = Math.floor(target.getBoundingClientRect().left) - (self.windowWidth - self.width);
+        self._events.drag.bind(self)(this);
 
-        if (self.mode === 'right') {
+        var xCurrent = this.get('xCurrent');
+
+        var boxLeft = Math.floor(target.getBoundingClientRect().left) - (self._windowWidth - self._width);
+
+        if (self._mode === 'right') {
           switch (this.currentDirection) {
             case 'left':
               {
-                if (self.width >= boxLeft) {
-                  if (-xCurrent > self.width) {
-                    xCurrent = -self.width;
+                if (self._width >= boxLeft) {
+                  if (-xCurrent > self._width) {
+                    xCurrent = -self._width;
                   } else if (xCurrent > 0) {
                     xCurrent = 0;
                   }
@@ -347,11 +503,11 @@ var _default = /*#__PURE__*/function () {
 
             case 'right':
               {
-                if (self.windowWidth > boxLeft) {
+                if (self._windowWidth > boxLeft) {
                   if (-xCurrent < 0) {
                     xCurrent = 0;
-                  } else if (-xCurrent > self.width) {
-                    xCurrent = -self.width;
+                  } else if (-xCurrent > self._width) {
+                    xCurrent = -self._width;
                   }
 
                   target.style.transform = "translateX(".concat(xCurrent, "px)");
@@ -360,13 +516,13 @@ var _default = /*#__PURE__*/function () {
                 break;
               }
           }
-        } else if (self.mode === 'left') {
+        } else if (self._mode === 'left') {
           switch (this.currentDirection) {
             case 'right':
               {
                 if (boxLeft < 0) {
-                  if (xCurrent > self.width) {
-                    xCurrent = self.width;
+                  if (xCurrent > self._width) {
+                    xCurrent = self._width;
                   } else if (xCurrent <= 0) {
                     xCurrent = 0;
                   }
@@ -379,8 +535,8 @@ var _default = /*#__PURE__*/function () {
 
             case 'left':
               {
-                if (xCurrent >= self.width) {
-                  xCurrent = self.width;
+                if (xCurrent >= self._width) {
+                  xCurrent = self._width;
                 } else if (xCurrent < 0) {
                   xCurrent = 0;
                 }
@@ -393,23 +549,23 @@ var _default = /*#__PURE__*/function () {
       };
 
       swipe.stop = function () {
-        if (self.lock && !self.isOpened) {
+        if (self._lock && !self._isOpened) {
           return false;
         }
 
         var boxLeft = Math.floor(target.getBoundingClientRect().left);
 
-        if (self.mode === 'right') {
-          boxLeft = boxLeft - (self.windowWidth - self.width);
+        if (self._mode === 'right') {
+          boxLeft = boxLeft - (self._windowWidth - self._width);
 
           switch (this.currentDirection) {
             case 'left':
               {
-                if (boxLeft < self.width) {
-                  if (boxLeft < self.width - 30) {
-                    self.openRightMenu();
+                if (boxLeft < self._width) {
+                  if (boxLeft < self._width - 30) {
+                    self._openRightMenu();
                   } else {
-                    self.closeRightMenu();
+                    self._closeRightMenu();
                   }
                 } else {
                   target.style.transform = 'translateX(0px)';
@@ -422,26 +578,26 @@ var _default = /*#__PURE__*/function () {
               {
                 if (boxLeft > 0) {
                   if (boxLeft > 30) {
-                    self.closeRightMenu();
+                    self._closeRightMenu();
                   } else {
-                    self.openRightMenu();
+                    self._openRightMenu();
                   }
                 } else {
-                  target.style.transform = "translateX(-".concat(self.width, "px)");
+                  target.style.transform = "translateX(-".concat(self._width, "px)");
                 }
 
                 break;
               }
           }
-        } else if (self.mode === 'left') {
+        } else if (self._mode === 'left') {
           switch (this.currentDirection) {
             case 'right':
               {
-                if (-boxLeft < self.width) {
-                  if (-boxLeft < self.width - 30) {
-                    self.openLeftMenu();
+                if (-boxLeft < self._width) {
+                  if (-boxLeft < self._width - 30) {
+                    self._openLeftMenu();
                   } else {
-                    self.closeLeftMenu();
+                    self._closeLeftMenu();
                   }
                 } else {
                   target.style.transform = 'translateX(0px)';
@@ -454,12 +610,12 @@ var _default = /*#__PURE__*/function () {
               {
                 if (boxLeft < 0) {
                   if (boxLeft < -30) {
-                    self.closeLeftMenu();
+                    self._closeLeftMenu();
                   } else {
-                    self.openLeftMenu();
+                    self._openLeftMenu();
                   }
                 } else {
-                  target.style.transform = "translateX(".concat(self.width, "px)");
+                  target.style.transform = "translateX(".concat(self._width, "px)");
                 }
 
                 break;
@@ -467,12 +623,16 @@ var _default = /*#__PURE__*/function () {
           }
         }
 
-        self.events.stop.bind(self)(this);
+        self._events.stop.bind(self)(this);
       };
     }
+    /**
+     * @description Getting the width of the scrollbar.
+     * */
+
   }, {
-    key: "scrollWidth",
-    value: function scrollWidth() {
+    key: "_getScrollWidth",
+    value: function _getScrollWidth() {
       var result = this._scrollWidth;
 
       if (result === false) {
@@ -487,32 +647,89 @@ var _default = /*#__PURE__*/function () {
 
       return result;
     }
+    /**
+     * @deprecated Since version 2.1 Will be deleted in version 3.0. Use openMenu instead.
+     */
+
   }, {
     key: "open",
     value: function open() {
-      if (this.mode === 'right') {
-        this.openRightMenu();
+      this.openMenu();
+    }
+    /**
+     * @description Opens the menu.
+     * */
+
+  }, {
+    key: "openMenu",
+    value: function openMenu() {
+      if (this._mode === 'right') {
+        this._openRightMenu();
       } else {
-        this.openLeftMenu();
+        this._openLeftMenu();
       }
     }
+    /**
+     * @deprecated Since version 2.1 Will be deleted in version 3.0. Use closeMenu instead.
+     */
+
   }, {
     key: "close",
     value: function close() {
-      if (this.mode === 'right') {
-        this.closeRightMenu();
+      this.closeMenu();
+    }
+    /**
+     * @description Closes the menu.
+     * */
+
+  }, {
+    key: "closeMenu",
+    value: function closeMenu() {
+      if (this._mode === 'right') {
+        this._closeRightMenu();
       } else {
-        this.closeLeftMenu();
+        this._closeLeftMenu();
       }
     }
+    /**
+     * @deprecated Since version 2.1 Will be deleted in version 3.0. Use toggleMenu instead.
+     */
+
   }, {
     key: "toggle",
     value: function toggle() {
-      if (this.isOpened) {
-        this.close();
+      this.toggleMenu();
+    }
+    /**
+     * @description Opens or closes the menu.
+     * */
+
+  }, {
+    key: "toggleMenu",
+    value: function toggleMenu() {
+      if (this._isOpened) {
+        this.closeMenu();
       } else {
-        this.open();
+        this.openMenu();
       }
+    }
+    /**
+     * @description Disables menu swiping.
+     * */
+
+  }, {
+    key: "disableSwipe",
+    value: function disableSwipe() {
+      this.lock = true;
+    }
+    /**
+     * @description Enables menu swiping.
+     * */
+
+  }, {
+    key: "enableSwipe",
+    value: function enableSwipe() {
+      this.lock = false;
     }
   }]);
 
@@ -634,7 +851,6 @@ var Swipe = /*#__PURE__*/function () {
         return false;
       }
 
-      console.log(Math.abs(xDiff), Math.abs(yDiff), Math.abs(xDiff) >= Math.abs(yDiff) ? 'horizontal' : 'vertical');
       this.setDirection(e, xDiff, yDiff);
       this.set('xDown', null);
       this.set('yDown', null);

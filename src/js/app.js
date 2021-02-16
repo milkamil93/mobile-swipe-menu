@@ -1,2 +1,2 @@
-import Menu from "./menu";
-window.MobileSwipeMenu = Menu;
+import Menu from './menu'
+window.MobileSwipeMenu = Menu

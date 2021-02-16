@@ -1,119 +1,248 @@
-import {Swipe} from './swipe'
+import { Swipe } from './swipe'
 
-export default class {
-    constructor (selector, options = {}) {
-        const {mode = 'right', width = 0, hookWidth = 30, enableBodyHook = false, events = {}} = options
-        this.mode = mode
-        this.width = width
-        this.lock = false
-        this.hookWidth = hookWidth
-        this.enableBodyHook = enableBodyHook
-        this._scrollWidth = false
-        this.isOpened = false
-        this.events = Object.assign({
-            start: () => {
-            },
-            stop: () => {
-            },
-            opening: () => {
-            },
-            closing: () => {
-            },
-            drag: () => {
-            }
+export default class
+{
+    /**
+     * @description Operating mode. Possible values: `right`, `left`
+     * @type string
+     */
+    _mode
+
+    /**
+     * @deprecated Will be deleted in version 3.0. Use `disableSwipe` or `enableSwipe` methods instead.
+     * @description The status of whether the swipe will run.
+     * @type boolean
+     */
+    lock = false
+
+    /**
+     * @description Menu width.
+     * @type number
+     * */
+    _width
+
+    /**
+     * @description Side grip width. Does not work if `enableBodyHook` is enabled.
+     * @type number
+     * */
+    _hookWidth
+
+    /**
+     * @description Capture mode. If enabled, the entire screen is taken into account.
+     * @type boolean
+     * */
+    _enableBodyHook
+
+    /**
+     * @description Scrolling bar width.
+     * @types number, boolean
+     * */
+    _scrollWidth = false
+
+    /**
+     * @description Menu open status.
+     * @type boolean
+     * */
+    _isOpened = false
+
+    /**
+     * @description Event set.
+     * @type object
+     * */
+    _events
+
+    /**
+     * @description Menu element in document.
+     * @type object
+     * */
+    _element
+
+    /**
+     * @description Window width.
+     * @type number
+     * */
+    _windowWidth
+
+    /**
+     * @constructor
+     * @param {string, object} selector - Menu element or selector in document.
+     * @param {object} options - Customization options.
+     * @param {string} options.mode - Operating mode. Possible values: right, left
+     * @param {number} options.width - Menu width.
+     * @param {number} options.hookWidth - Side grip width. Does not work if `enableBodyHook` is enabled.
+     * @param {boolean} options.enableBodyHook - Capture mode. If enabled, the entire screen is taken into account.
+     * @param {object} options.events - Event set.
+     * @param {function} options.events.start - Event starting swiping menu.
+     * @param {function} options.events.stop - Event stopping swiping menu.
+     * @param {function} options.events.opened - Event menu is opened.
+     * @param {function} options.events.closed - Event menu is closed.
+     * @param {function} options.events.drag - Event menu is swiping.
+     * */
+    constructor (selector, options = {})
+    {
+        const { mode = 'right', width = 0, hookWidth = 30, enableBodyHook = false, events = {} } = options
+
+        this._mode = mode
+        this._width = width
+        this._hookWidth = hookWidth
+        this._enableBodyHook = enableBodyHook
+        this._events = Object.assign({
+            start:  () => {},
+            stop:   () => {},
+            opened: () => {},
+            closed: () => {},
+            drag:   () => {}
         }, events)
-        this.connectElement(selector)
+
+        this._connectElement(selector)
+
         if (!enableBodyHook) {
-            this.createHook()
+            this._createHook()
         }
-        this.init()
+
+        this._init()
     }
 
-    connectElement (selector) {
-        this.element = typeof selector === 'string' ? document.querySelector(selector) : selector
-        this.element.style.height = '100%'
-        this.element.style.top = '0'
-        this.element.style.zIndex = '1000'
-        this.element.style.position = 'fixed'
-        this.windowWidth = window.innerWidth - this.scrollWidth()
-        this.width = this.width || this.windowWidth
-        this.element.style.width = this.width + 'px'
-        this.element.style[this.mode] = -this.width + 'px'
+    /**
+     * @description Creating a menu element in a document.
+     * @param {string, object} selector - Menu element or selector in document.
+     * */
+    _connectElement (selector)
+    {
+        this._element = typeof selector === 'string' ? document.querySelector(selector) : selector
+        this._element.style.height = '100%'
+        this._element.style.top = '0'
+        this._element.style.zIndex = '1000'
+        this._element.style.position = 'fixed'
+        this._windowWidth = window.innerWidth - this._getScrollWidth()
+        this._width = this._width || this._windowWidth
+        this._element.style.width = this._width + 'px'
+        this._element.style[this._mode] = -this._width + 'px'
     }
 
-    createHook () {
+    /**
+     * @description Side grip creation.
+     * */
+    _createHook ()
+    {
         const hook = document.createElement('div')
-        hook.style.width = this.hookWidth + 'px'
+
+        hook.style.width = this._hookWidth + 'px'
         hook.style.height = '100%'
         hook.style.top = '0'
         hook.style.position = 'absolute'
-        if (this.mode === 'right') {
-            hook.style.left = `-${this.hookWidth}px`
-        } else {
-            hook.style.right = `-${this.hookWidth}px`
-        }
         hook.style.cursor = 'pointer'
-        this.element.append(hook)
+
+        if (this._mode === 'right') {
+            hook.style.left = `-${this._hookWidth}px`
+        } else {
+            hook.style.right = `-${this._hookWidth}px`
+        }
+
+        this._element.append(hook)
     }
 
-    openRightMenu () {
-        this.transition()
-        this.element.style.transform = `translateX(-${this.width}px)`
-        this.isOpened = true
-        this.events.opening.bind(this)()
+    /**
+     * @description Opening the menu with mode `right`.
+     * */
+    _openRightMenu ()
+    {
+        this._transition()
+
+        this._element.style.transform = `translateX(-${this._width}px)`
+        this._isOpened = true
+
+        this._events.opened.bind(this)()
     }
 
-    closeRightMenu () {
-        this.transition()
-        this.element.style.transform = 'translateX(0px)'
-        this.isOpened = false
-        this.events.closing.bind(this)()
+    /**
+     * @description Closing the menu with mode `right`.
+     * */
+    _closeRightMenu ()
+    {
+        this._transition()
+
+        this._element.style.transform = 'translateX(0px)'
+        this._isOpened = false
+
+        this._events.closed.bind(this)()
     }
 
-    openLeftMenu () {
-        this.transition()
-        this.element.style.transform = `translateX(${this.width}px)`
-        this.isOpened = true
-        this.events.opening.bind(this)()
+    /**
+     * @description Opening the menu with mode `left`.
+     * */
+    _openLeftMenu ()
+    {
+        this._transition()
+
+        this._element.style.transform = `translateX(${this._width}px)`
+        this._isOpened = true
+
+        this._events.opened.bind(this)()
     }
 
-    closeLeftMenu () {
-        this.transition()
-        this.element.style.transform = 'translateX(0px)'
-        this.isOpened = false
-        this.events.closing.bind(this)()
+    /**
+     * @description Closing the menu with mode `left`.
+     * */
+    _closeLeftMenu ()
+    {
+        this._transition()
+
+        this._element.style.transform = 'translateX(0px)'
+        this._isOpened = false
+
+        this._events.closed.bind(this)()
     }
 
-    transition () {
-        this.element.style.transitionDuration = '300ms'
+    /**
+     * @description Smooth movement.
+     * */
+    _transition ()
+    {
+        this._element.style.transitionDuration = '300ms'
+
         setTimeout(() => {
-            this.element.style.transitionDuration = '0ms'
+            this._element.style.transitionDuration = '0ms'
         }, 200)
     }
 
-    init () {
+    /**
+     * @description Initialization.
+     * */
+    _init ()
+    {
         const self = this
-        const target = this.element
-        const hookTarget = this.enableBodyHook ? document.body : this.element
+        const target = this._element
+        const hookTarget = this._enableBodyHook ? document.body : this._element
+
         hookTarget.style['cursor'] = 'auto'
         hookTarget.style['touch-action'] = 'pan-y'
         hookTarget.style['-ms-touch-action'] = 'pan-y'
+
         const swipe = new Swipe(hookTarget)
-        swipe.start = function (e) {
-            if (self.lock && !self.isOpened) {
+
+        swipe.start = function (e)
+        {
+            if (self._lock && !self._isOpened) {
                 return false
             }
+
             const matrix = new WebKitCSSMatrix(getComputedStyle(target).transform).m41
             const toucheX = this.getTouches(e).offsetX
+
             if (matrix) {
                 this.set('xStart', toucheX - matrix)
             }
-            self.events.start.bind(self)(this)
+
+            self._events.start.bind(self)(this)
         }
-        swipe.drag = function (e) {
-            if (self.lock && !self.isOpened) {
+
+        swipe.drag = function (e)
+        {
+            if (self._lock && !self._isOpened) {
                 return false
             }
+
             if (['left', 'right'].indexOf(this.currentDirection) >= 0 && e.type === 'touchmove') {
                 e.stopImmediatePropagation()
                 e.stopPropagation()
@@ -122,16 +251,17 @@ export default class {
                 }
             }
 
-            self.events.drag.bind(self)(this)
-            let xCurrent = this.get('xCurrent')
-            let boxLeft = Math.floor(target.getBoundingClientRect().left) - (self.windowWidth - self.width)
+            self._events.drag.bind(self)(this)
 
-            if (self.mode === 'right') {
+            let xCurrent = this.get('xCurrent')
+            let boxLeft = Math.floor(target.getBoundingClientRect().left) - (self._windowWidth - self._width)
+
+            if (self._mode === 'right') {
                 switch (this.currentDirection) {
                     case 'left': {
-                        if (self.width >= boxLeft) {
-                            if (-xCurrent > self.width) {
-                                xCurrent = -self.width
+                        if (self._width >= boxLeft) {
+                            if (-xCurrent > self._width) {
+                                xCurrent = -self._width
                             } else if (xCurrent > 0) {
                                 xCurrent = 0
                             }
@@ -140,23 +270,23 @@ export default class {
                         break
                     }
                     case 'right': {
-                        if (self.windowWidth > boxLeft) {
+                        if (self._windowWidth > boxLeft) {
                             if (-xCurrent < 0) {
                                 xCurrent = 0
-                            } else if (-xCurrent > self.width) {
-                                xCurrent = -self.width
+                            } else if (-xCurrent > self._width) {
+                                xCurrent = -self._width
                             }
                             target.style.transform = `translateX(${xCurrent}px)`
                         }
                         break
                     }
                 }
-            } else if (self.mode === 'left') {
+            } else if (self._mode === 'left') {
                 switch (this.currentDirection) {
                     case 'right': {
                         if (boxLeft < 0) {
-                            if (xCurrent > self.width) {
-                                xCurrent = self.width
+                            if (xCurrent > self._width) {
+                                xCurrent = self._width
                             } else if (xCurrent <= 0) {
                                 xCurrent = 0
                             }
@@ -165,8 +295,8 @@ export default class {
                         break
                     }
                     case 'left': {
-                        if (xCurrent >= self.width) {
-                            xCurrent = self.width
+                        if (xCurrent >= self._width) {
+                            xCurrent = self._width
                         } else if (xCurrent < 0) {
                             xCurrent = 0
                         }
@@ -176,20 +306,24 @@ export default class {
                 }
             }
         }
-        swipe.stop = function () {
-            if (self.lock && !self.isOpened) {
+
+        swipe.stop = function ()
+        {
+            if (self._lock && !self._isOpened) {
                 return false
             }
+
             let boxLeft = Math.floor(target.getBoundingClientRect().left)
-            if (self.mode === 'right') {
-                boxLeft = boxLeft - (self.windowWidth - self.width)
+
+            if (self._mode === 'right') {
+                boxLeft = boxLeft - (self._windowWidth - self._width)
                 switch (this.currentDirection) {
                     case 'left': {
-                        if (boxLeft < self.width) {
-                            if (boxLeft < self.width - 30) {
-                                self.openRightMenu()
+                        if (boxLeft < self._width) {
+                            if (boxLeft < self._width - 30) {
+                                self._openRightMenu()
                             } else {
-                                self.closeRightMenu()
+                                self._closeRightMenu()
                             }
                         } else {
                             target.style.transform = 'translateX(0px)'
@@ -199,24 +333,24 @@ export default class {
                     case 'right': {
                         if (boxLeft > 0) {
                             if (boxLeft > 30) {
-                                self.closeRightMenu()
+                                self._closeRightMenu()
                             } else {
-                                self.openRightMenu()
+                                self._openRightMenu()
                             }
                         } else {
-                            target.style.transform = `translateX(-${self.width}px)`
+                            target.style.transform = `translateX(-${self._width}px)`
                         }
                         break
                     }
                 }
-            } else if (self.mode === 'left') {
+            } else if (self._mode === 'left') {
                 switch (this.currentDirection) {
                     case 'right': {
-                        if (-boxLeft < self.width) {
-                            if (-boxLeft < self.width - 30) {
-                                self.openLeftMenu()
+                        if (-boxLeft < self._width) {
+                            if (-boxLeft < self._width - 30) {
+                                self._openLeftMenu()
                             } else {
-                                self.closeLeftMenu()
+                                self._closeLeftMenu()
                             }
                         } else {
                             target.style.transform = 'translateX(0px)'
@@ -226,23 +360,29 @@ export default class {
                     case 'left': {
                         if (boxLeft < 0) {
                             if (boxLeft < -30) {
-                                self.closeLeftMenu()
+                                self._closeLeftMenu()
                             } else {
-                                self.openLeftMenu()
+                                self._openLeftMenu()
                             }
                         } else {
-                            target.style.transform = `translateX(${self.width}px)`
+                            target.style.transform = `translateX(${self._width}px)`
                         }
                         break
                     }
                 }
             }
-            self.events.stop.bind(self)(this)
+
+            self._events.stop.bind(self)(this)
         }
     }
 
-    scrollWidth () {
+    /**
+     * @description Getting the width of the scrollbar.
+     * */
+    _getScrollWidth ()
+    {
         const result = this._scrollWidth
+
         if (result === false) {
             const div = document.createElement('div')
             div.style.overflowY = 'scroll'
@@ -252,30 +392,83 @@ export default class {
             this._scrollWidth = div.offsetWidth - div.clientWidth
             div.remove()
         }
+
         return result
     }
 
-    open () {
-        if (this.mode === 'right') {
-            this.openRightMenu()
+    /**
+     * @deprecated Since version 2.1 Will be deleted in version 3.0. Use openMenu instead.
+     */
+    open ()
+    {
+        this.openMenu()
+    }
+
+    /**
+     * @description Opens the menu.
+     * */
+    openMenu ()
+    {
+        if (this._mode === 'right') {
+            this._openRightMenu()
         } else {
-            this.openLeftMenu()
+            this._openLeftMenu()
         }
     }
 
-    close () {
-        if (this.mode === 'right') {
-            this.closeRightMenu()
+    /**
+     * @deprecated Since version 2.1 Will be deleted in version 3.0. Use closeMenu instead.
+     */
+    close ()
+    {
+        this.closeMenu()
+    }
+
+    /**
+     * @description Closes the menu.
+     * */
+    closeMenu ()
+    {
+        if (this._mode === 'right') {
+            this._closeRightMenu()
         } else {
-            this.closeLeftMenu()
+            this._closeLeftMenu()
         }
     }
 
-    toggle () {
-        if (this.isOpened) {
-            this.close()
+    /**
+     * @deprecated Since version 2.1 Will be deleted in version 3.0. Use toggleMenu instead.
+     */
+    toggle ()
+    {
+        this.toggleMenu()
+    }
+
+    /**
+     * @description Opens or closes the menu.
+     * */
+    toggleMenu ()
+    {
+        if (this._isOpened) {
+            this.closeMenu()
         } else {
-            this.open()
+            this.openMenu()
         }
+    }
+
+    /**
+     * @description Disables menu swiping.
+     * */
+    disableSwipe ()
+    {
+        this.lock = true
+    }
+
+    /**
+     * @description Enables menu swiping.
+     * */
+    enableSwipe ()
+    {
+        this.lock = false
     }
 }

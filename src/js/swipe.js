@@ -1,6 +1,7 @@
-export class Swipe {
-
-    constructor (selector) {
+export class Swipe
+{
+    constructor (selector)
+    {
         this.inWork = false
         this.xDown = null
         this.yDown = null
@@ -17,15 +18,18 @@ export class Swipe {
         }
     }
 
-    set(field, value) {
+    set(field, value)
+    {
         this[field] = value
     }
 
-    get (field) {
+    get (field)
+    {
         return this[field]
     }
 
-    eventListener (element) {
+    eventListener (element)
+    {
         element.addEventListener('mousedown', this.handleTouchStart.bind(this))
         element.addEventListener('touchstart', this.handleTouchStart.bind(this))
         element.addEventListener('mousemove', this.handleTouchMove.bind(this))
@@ -34,13 +38,15 @@ export class Swipe {
         element.addEventListener('touchend', this.handleTouchEnd.bind(this))
     }
 
-    getTouches (e) {
-        const result = {offsetX: 0, offsetY: 0}
+    getTouches (e)
+    {
+        const result = { offsetX: 0, offsetY: 0 }
         const touch = e.touches
             ? e.touches[0]
             : e.originalEvent
                 ? e.originalEvent.touches[0]
                 : false
+
         if (touch) {
             result.offsetX = Math.round(touch.clientX)
             result.offsetY = Math.round(touch.clientY)
@@ -48,20 +54,25 @@ export class Swipe {
             result.offsetX = Math.round(e.clientX)
             result.offsetY = Math.round(e.clientY)
         }
+
         return result
     }
 
-    handleTouchStart (e) {
+    handleTouchStart (e)
+    {
         const touche = this.getTouches(e)
+
         this.set('inWork', true)
         this.set('xDown', touche.offsetX)
         this.set('yDown', touche.offsetY)
         this.set('xStart', touche.offsetX)
         this.set('yStart', touche.offsetY)
+
         this.start(e)
     }
 
-    handleTouchMove (e) {
+    handleTouchMove (e)
+    {
         if (!this.get('inWork')) {
             return false
         }
@@ -90,7 +101,8 @@ export class Swipe {
         this.set('yDown', null)
     }
 
-    setDirection (e, xDiff, yDiff) {
+    setDirection (e, xDiff, yDiff)
+    {
         if (Math.abs(xDiff) >= Math.abs(yDiff)) {
             if (xDiff > 0) {
                 this.set('currentDirection', 'left')
@@ -110,31 +122,23 @@ export class Swipe {
         }
     }
 
-    handleTouchEnd (e) {
+    handleTouchEnd (e)
+    {
         this.set('inWork', false)
+
         this.stop(e)
     }
 
-    drag (e) {
+    drag (e)
+    {
         e.target.style.transition = 'none'
         e.target.style.transform = `translate(${this.get('xCurrent')}px, ${this.get('yCurrent')}px)`
     }
 
-    left (e) {
-    }
-
-    right (e) {
-    }
-
-    up (e) {
-    }
-
-    down (e) {
-    }
-
-    start (e) {
-    }
-
-    stop (e) {
-    }
+    left  (e) {}
+    right (e) {}
+    up    (e) {}
+    down  (e) {}
+    start (e) {}
+    stop  (e) {}
 }
