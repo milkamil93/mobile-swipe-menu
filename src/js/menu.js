@@ -223,7 +223,7 @@ export default class
 
         swipe.start = function (e)
         {
-            if (self._lock && !self._isOpened) {
+            if (self.lock && !self._isOpened) {
                 return false
             }
 
@@ -239,7 +239,7 @@ export default class
 
         swipe.drag = function (e)
         {
-            if (self._lock && !self._isOpened) {
+            if (self.lock && !self._isOpened) {
                 return false
             }
 
@@ -309,7 +309,7 @@ export default class
 
         swipe.stop = function ()
         {
-            if (self._lock && !self._isOpened) {
+            if (self.lock && !self._isOpened) {
                 return false
             }
 
