@@ -471,4 +471,13 @@ export default class
     {
         this.lock = false
     }
+
+    /**
+     * @description Set width menu
+     * @param width float Numeric floating point value
+     * */
+    setWidth (width = 0)
+    {
+        this._width = width
+    }
 }
