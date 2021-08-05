@@ -115,9 +115,7 @@ export default class
         this._element.style.zIndex = '1000'
         this._element.style.position = 'fixed'
         this._windowWidth = window.innerWidth - this._getScrollWidth()
-        this._width = this._width || this._windowWidth
-        this._element.style.width = this._width + 'px'
-        this._element.style[this._mode] = -this._width + 'px'
+        this.setWidth(this._width || this._windowWidth)
     }
 
     /**
@@ -479,5 +477,7 @@ export default class
     setWidth (width = 0)
     {
         this._width = width
+        this._element.style.width = this._width + 'px'
+        this._element.style[this._mode] = -this._width + 'px'
     }
 }
