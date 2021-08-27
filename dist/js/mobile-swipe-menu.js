@@ -1,6 +1,6 @@
 /**
  * @package        mobile-swipe-menu
- * @version        2.1.0
+ * @version        2.2.1
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
  * @copyright      2021 mobile-swipe-menu
@@ -108,6 +108,7 @@ function _classCallCheck(instance, Constructor) {
 }
 
 module.exports = _classCallCheck;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
@@ -135,6 +136,7 @@ function _createClass(Constructor, protoProps, staticProps) {
 }
 
 module.exports = _createClass;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
@@ -161,6 +163,7 @@ function _defineProperty(obj, key, value) {
 }
 
 module.exports = _defineProperty;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
 
 /***/ }),
 
@@ -337,10 +340,9 @@ var _default = /*#__PURE__*/function () {
       this._element.style.top = '0';
       this._element.style.zIndex = '1000';
       this._element.style.position = 'fixed';
+      this._element.style.willChange = 'transform';
       this._windowWidth = window.innerWidth - this._getScrollWidth();
-      this._width = this._width || this._windowWidth;
-      this._element.style.width = this._width + 'px';
-      this._element.style[this._mode] = -this._width + 'px';
+      this.setWidth(this._width || this._windowWidth);
     }
     /**
      * @description Side grip creation.
@@ -450,7 +452,7 @@ var _default = /*#__PURE__*/function () {
       var swipe = new _swipe__WEBPACK_IMPORTED_MODULE_3__["Swipe"](hookTarget);
 
       swipe.start = function (e) {
-        if (self._lock && !self._isOpened) {
+        if (self.lock && !self._isOpened) {
           return false;
         }
 
@@ -465,7 +467,7 @@ var _default = /*#__PURE__*/function () {
       };
 
       swipe.drag = function (e) {
-        if (self._lock && !self._isOpened) {
+        if (self.lock && !self._isOpened) {
           return false;
         }
 
@@ -549,7 +551,7 @@ var _default = /*#__PURE__*/function () {
       };
 
       swipe.stop = function () {
-        if (self._lock && !self._isOpened) {
+        if (self.lock && !self._isOpened) {
           return false;
         }
 
@@ -730,6 +732,19 @@ var _default = /*#__PURE__*/function () {
     key: "enableSwipe",
     value: function enableSwipe() {
       this.lock = false;
+    }
+    /**
+     * @description Set width menu
+     * @param width float Numeric floating point value
+     * */
+
+  }, {
+    key: "setWidth",
+    value: function setWidth() {
+      var width = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+      this._width = width;
+      this._element.style.width = this._width + 'px';
+      this._element.style[this._mode] = -this._width + 'px';
     }
   }]);
 

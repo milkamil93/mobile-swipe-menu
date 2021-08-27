@@ -1,7 +1,7 @@
 {
   "name": "mobile-swipe-menu",
   "description": "Swipe Menu with Vanilla JS for mobile",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "homepage": "https://github.com/milkamil93/mobile-swipe-menu",
   "main": "index.js",
   "author": "milkamil93",
@@ -26,14 +26,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/plugin-proposal-class-properties": "^7.12.13",
+    "@babel/core": "^7.15.0",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-transform-runtime": "^7.12.15",
-    "@babel/preset-env": "^7.12.16",
-    "autoprefixer": "^10.2.4",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "autoprefixer": "^10.3.3",
     "babel-loader": "^8.2.2",
-    "browser-sync": "^2.26.14",
+    "browser-sync": "^2.27.5",
     "gulp": "^4.0.2",
     "gulp-header": "^2.0.9",
     "gulp-if": "^3.0.0",
@@ -51,5 +51,8 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "dependencies": {
+    "npm-check-updates": "^11.8.3"
+  }
 }

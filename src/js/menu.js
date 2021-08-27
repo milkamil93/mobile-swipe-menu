@@ -114,6 +114,7 @@ export default class
         this._element.style.top = '0'
         this._element.style.zIndex = '1000'
         this._element.style.position = 'fixed'
+        this._element.style.willChange = 'transform'
         this._windowWidth = window.innerWidth - this._getScrollWidth()
         this.setWidth(this._width || this._windowWidth)
     }
