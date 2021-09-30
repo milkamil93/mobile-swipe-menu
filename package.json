@@ -1,8 +1,8 @@
 {
   "name": "mobile-swipe-menu",
   "description": "Swipe Menu with Vanilla JS for mobile",
-  "version": "2.2.1",
-  "homepage": "https://github.com/milkamil93/mobile-swipe-menu",
+  "version": "2.2.2",
+  "homepage": "https://milkamil93.github.io/",
   "main": "index.js",
   "author": "milkamil93",
   "license": "GPL-3.0",

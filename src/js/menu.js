@@ -78,7 +78,7 @@ export default class
      * @param {function} options.events.closed - Event menu is closed.
      * @param {function} options.events.drag - Event menu is swiping.
      * */
-    constructor (selector, options = {})
+    constructor(selector, options = {})
     {
         const { mode = 'right', width = 0, hookWidth = 30, enableBodyHook = false, events = {} } = options
 
@@ -107,7 +107,7 @@ export default class
      * @description Creating a menu element in a document.
      * @param {string, object} selector - Menu element or selector in document.
      * */
-    _connectElement (selector)
+    _connectElement(selector)
     {
         this._element = typeof selector === 'string' ? document.querySelector(selector) : selector
         this._element.style.height = '100%'
@@ -122,7 +122,7 @@ export default class
     /**
      * @description Side grip creation.
      * */
-    _createHook ()
+    _createHook()
     {
         const hook = document.createElement('div')
 
@@ -144,62 +144,53 @@ export default class
     /**
      * @description Opening the menu with mode `right`.
      * */
-    _openRightMenu ()
+    _openRightMenu()
     {
         this._transition()
-
         this._element.style.transform = `translateX(-${this._width}px)`
         this._isOpened = true
-
         this._events.opened.bind(this)()
     }
 
     /**
      * @description Closing the menu with mode `right`.
      * */
-    _closeRightMenu ()
+    _closeRightMenu()
     {
         this._transition()
-
         this._element.style.transform = 'translateX(0px)'
         this._isOpened = false
-
         this._events.closed.bind(this)()
     }
 
     /**
      * @description Opening the menu with mode `left`.
      * */
-    _openLeftMenu ()
+    _openLeftMenu()
     {
         this._transition()
-
         this._element.style.transform = `translateX(${this._width}px)`
         this._isOpened = true
-
         this._events.opened.bind(this)()
     }
 
     /**
      * @description Closing the menu with mode `left`.
      * */
-    _closeLeftMenu ()
+    _closeLeftMenu()
     {
         this._transition()
-
         this._element.style.transform = 'translateX(0px)'
         this._isOpened = false
-
         this._events.closed.bind(this)()
     }
 
     /**
      * @description Smooth movement.
      * */
-    _transition ()
+    _transition()
     {
         this._element.style.transitionDuration = '300ms'
-
         setTimeout(() => {
             this._element.style.transitionDuration = '0ms'
         }, 200)
@@ -208,7 +199,7 @@ export default class
     /**
      * @description Initialization.
      * */
-    _init ()
+    _init()
     {
         const self = this
         const target = this._element
@@ -378,7 +369,7 @@ export default class
     /**
      * @description Getting the width of the scrollbar.
      * */
-    _getScrollWidth ()
+    _getScrollWidth()
     {
         const result = this._scrollWidth
 
@@ -398,7 +389,7 @@ export default class
     /**
      * @deprecated Since version 2.1 Will be deleted in version 3.0. Use openMenu instead.
      */
-    open ()
+    open()
     {
         this.openMenu()
     }
@@ -406,7 +397,7 @@ export default class
     /**
      * @description Opens the menu.
      * */
-    openMenu ()
+    openMenu()
     {
         if (this._mode === 'right') {
             this._openRightMenu()
@@ -418,7 +409,7 @@ export default class
     /**
      * @deprecated Since version 2.1 Will be deleted in version 3.0. Use closeMenu instead.
      */
-    close ()
+    close()
     {
         this.closeMenu()
     }
@@ -426,7 +417,7 @@ export default class
     /**
      * @description Closes the menu.
      * */
-    closeMenu ()
+    closeMenu()
     {
         if (this._mode === 'right') {
             this._closeRightMenu()
@@ -438,7 +429,7 @@ export default class
     /**
      * @deprecated Since version 2.1 Will be deleted in version 3.0. Use toggleMenu instead.
      */
-    toggle ()
+    toggle()
     {
         this.toggleMenu()
     }
@@ -446,7 +437,7 @@ export default class
     /**
      * @description Opens or closes the menu.
      * */
-    toggleMenu ()
+    toggleMenu()
     {
         if (this._isOpened) {
             this.closeMenu()
@@ -458,7 +449,7 @@ export default class
     /**
      * @description Disables menu swiping.
      * */
-    disableSwipe ()
+    disableSwipe()
     {
         this.lock = true
     }
@@ -466,7 +457,7 @@ export default class
     /**
      * @description Enables menu swiping.
      * */
-    enableSwipe ()
+    enableSwipe()
     {
         this.lock = false
     }
@@ -475,7 +466,7 @@ export default class
      * @description Set width menu
      * @param width float Numeric floating point value
      * */
-    setWidth (width = 0)
+    setWidth(width = 0)
     {
         this._width = width
         this._element.style.width = this._width + 'px'

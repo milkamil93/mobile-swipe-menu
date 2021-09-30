@@ -1,6 +1,6 @@
 # Mobile Swipe Menu
 Swipe Menu with Vanilla JS for mobile
-###### Demo: https://milkamil93.github.io/
+###### Demo: https://milkamil93.github.io
 
 
 ## Instruction
