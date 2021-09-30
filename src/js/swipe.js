@@ -1,6 +1,52 @@
 export class Swipe
 {
-    constructor (selector)
+    /**
+     * @description Whether the movement is initiated
+     * @type boolean
+     */
+    inWork
+
+    /**
+     * @type float
+     */
+    xDown
+
+    /**
+     * @type float
+     */
+    yDown
+
+    /**
+     * @type float
+     */
+    xStart
+
+    /**
+     * @type float
+     */
+    yStart
+
+    /**
+     * @type float
+     */
+    xCurrent
+
+    /**
+     * @type float
+     */
+    yCurrent
+
+    /**
+     * @type string|null
+     * @description Current swiping side
+     */
+    currentDirection
+
+    /**
+     * @constructor
+     * @param selector {string, object}
+     * */
+    constructor(selector)
     {
         this.inWork = false
         this.xDown = null
@@ -18,17 +64,30 @@ export class Swipe
         }
     }
 
+    /**
+     * @description Setter this context
+     * @param field string
+     * @param value
+     * */
     set(field, value)
     {
         this[field] = value
     }
 
-    get (field)
+    /**
+     * @description Getter this context
+     * @param field string
+     * */
+    get(field)
     {
         return this[field]
     }
 
-    eventListener (element)
+    /**
+     * @description Add listener
+     * @param element object
+     * */
+    eventListener(element)
     {
         element.addEventListener('mousedown', this.handleTouchStart.bind(this))
         element.addEventListener('touchstart', this.handleTouchStart.bind(this))
@@ -38,13 +97,17 @@ export class Swipe
         element.addEventListener('touchend', this.handleTouchEnd.bind(this))
     }
 
-    getTouches (e)
+    /**
+     * @description Get coordinates
+     * @param event object
+     * */
+    getTouches(event)
     {
         const result = { offsetX: 0, offsetY: 0 }
-        const touch = e.touches
-            ? e.touches[0]
-            : e.originalEvent
-                ? e.originalEvent.touches[0]
+        const touch = event.touches
+            ? event.touches[0]
+            : event.originalEvent
+                ? event.originalEvent.touches[0]
                 : false
 
         if (touch) {
@@ -58,9 +121,13 @@ export class Swipe
         return result
     }
 
-    handleTouchStart (e)
+    /**
+     * @description Set init coordinates
+     * @param event object
+     * */
+    handleTouchStart(event)
     {
-        const touche = this.getTouches(e)
+        const touche = this.getTouches(event)
 
         this.set('inWork', true)
         this.set('xDown', touche.offsetX)
@@ -68,16 +135,20 @@ export class Swipe
         this.set('xStart', touche.offsetX)
         this.set('yStart', touche.offsetY)
 
-        this.start(e)
+        this.start(event)
     }
 
-    handleTouchMove (e)
+    /**
+     * @description Method for move event
+     * @param event object
+     * */
+    handleTouchMove(event)
     {
         if (!this.get('inWork')) {
             return false
         }
 
-        const touche = this.getTouches(e)
+        const touche = this.getTouches(event)
 
         this.set('xCurrent', touche.offsetX - this.get('xStart'))
         this.set('yCurrent', touche.offsetY - this.get('yStart'))
@@ -86,59 +157,72 @@ export class Swipe
         const yDiff = this.get('yDown') - touche.offsetY
 
         if (!this.get('currentDirection')) {
-            this.setDirection(e, xDiff, yDiff)
+            this.setDirection(event, xDiff, yDiff)
         }
 
-        this.drag(e)
+        this.drag(event)
 
         if (!this.get('xDown') || !this.get('yDown')) {
             return false
         }
 
-        this.setDirection(e, xDiff, yDiff)
+        this.setDirection(event, xDiff, yDiff)
 
         this.set('xDown', null)
         this.set('yDown', null)
     }
 
-    setDirection (e, xDiff, yDiff)
+    /**
+     * @description Set current direction
+     * @param event object
+     * @param xDiff float
+     * @param yDiff float
+     * */
+    setDirection(event, xDiff, yDiff)
     {
         if (Math.abs(xDiff) >= Math.abs(yDiff)) {
             if (xDiff > 0) {
                 this.set('currentDirection', 'left')
-                this.left(e)
+                this.left(event)
             } else {
                 this.set('currentDirection', 'right')
-                this.right(e)
+                this.right(event)
             }
         } else {
             if (yDiff > 0) {
                 this.set('currentDirection', 'up')
-                this.up(e)
+                this.up(event)
             } else {
                 this.set('currentDirection', 'down')
-                this.down(e)
+                this.down(event)
             }
         }
     }
 
-    handleTouchEnd (e)
+    /**
+     * @description Method for touch end
+     * @param event object
+     * */
+    handleTouchEnd(event)
     {
         this.set('inWork', false)
-
-        this.stop(e)
+        this.stop(event)
     }
 
-    drag (e)
+    /**
+     * @description Method for drag event
+     * @param event object
+     * */
+    drag(event)
     {
-        e.target.style.transition = 'none'
-        e.target.style.transform = `translate(${this.get('xCurrent')}px, ${this.get('yCurrent')}px)`
+        event.target.style.transition = 'none'
+        event.target.style.transform = `translate(${this.get('xCurrent')}px, ${this.get('yCurrent')}px)`
     }
 
-    left  (e) {}
-    right (e) {}
-    up    (e) {}
-    down  (e) {}
-    start (e) {}
-    stop  (e) {}
+    left  (event) {}
+    right (event) {}
+    up    (event) {}
+    down  (event) {}
+    start (event) {}
+    stop  (event) {}
 }
