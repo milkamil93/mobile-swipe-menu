@@ -16,13 +16,14 @@ new MobileSwipeMenu(selector, options)
 ```
 
 ### Options
-| Name              | Type      | Default   | Description                   |
-| ---               | ---       | ---       | ---                           |
-| `mode`            | string    | right     | operating mode (right, left)  |
-| `width`           | number    | 0         | menu width                    |
-| `hookWidth`       | number    | 30        | protrusion width              |
-| `enableBodyHook`  | boolean   | false     | react to the whole window     |
-| `events`          | object    | {}        | event set object              |
+| Name                     | Type      | Default   | Description                   |
+| ---                      | ---       | ---       | ---                           |
+| `mode`                   | string    | right     | operating mode (right, left)  |
+| `width`                  | number    | 0         | menu width                    |
+| `hookWidth`              | number    | 30        | protrusion width              |
+| `useHookWidthPercentage` | boolean   | false     | use percentage as hookWidth   |
+| `enableBodyHook`         | boolean   | false     | react to the whole window     |
+| `events`                 | object    | {}        | event set object              |
 
 ### Methods
 | Name              | Description           |
