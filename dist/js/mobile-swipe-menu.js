@@ -1,6 +1,6 @@
 /**
  * @package        mobile-swipe-menu
- * @version        2.2.1
+ * @version        2.2.3
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
  * @copyright      2021 mobile-swipe-menu
@@ -227,6 +227,11 @@ var _default = /*#__PURE__*/function () {
    * */
 
   /**
+   * @description Use percentage of your window as hookWidth.
+   * @type boolean
+   * */
+
+  /**
    * @description Capture mode. If enabled, the entire screen is taken into account.
    * @type boolean
    * */
@@ -263,6 +268,7 @@ var _default = /*#__PURE__*/function () {
    * @param {string} options.mode - Operating mode. Possible values: right, left
    * @param {number} options.width - Menu width.
    * @param {number} options.hookWidth - Side grip width. Does not work if `enableBodyHook` is enabled.
+   * @param {boolean} options.useHookWidthPercentage - Use percentage of your window as hookWidth.
    * @param {boolean} options.enableBodyHook - Capture mode. If enabled, the entire screen is taken into account.
    * @param {object} options.events - Event set.
    * @param {function} options.events.start - Event starting swiping menu.
@@ -284,6 +290,8 @@ var _default = /*#__PURE__*/function () {
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_hookWidth", void 0);
 
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_useHookWidthPercentage", void 0);
+
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_enableBodyHook", void 0);
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_scrollWidth", false);
@@ -302,6 +310,8 @@ var _default = /*#__PURE__*/function () {
         width = _options$width === void 0 ? 0 : _options$width,
         _options$hookWidth = options.hookWidth,
         hookWidth = _options$hookWidth === void 0 ? 30 : _options$hookWidth,
+        _options$useHookWidth = options.useHookWidthPercentage,
+        useHookWidthPercentage = _options$useHookWidth === void 0 ? false : _options$useHookWidth,
         _options$enableBodyHo = options.enableBodyHook,
         enableBodyHook = _options$enableBodyHo === void 0 ? false : _options$enableBodyHo,
         _options$events = options.events,
@@ -309,6 +319,7 @@ var _default = /*#__PURE__*/function () {
     this._mode = mode;
     this._width = width;
     this._hookWidth = hookWidth;
+    this._useHookWidthPercentage = useHookWidthPercentage;
     this._enableBodyHook = enableBodyHook;
     this._events = Object.assign({
       start: function start() {},
@@ -352,16 +363,17 @@ var _default = /*#__PURE__*/function () {
     key: "_createHook",
     value: function _createHook() {
       var hook = document.createElement('div');
-      hook.style.width = this._hookWidth + 'px';
+      var hookWidthValue = this._useHookWidthPercentage ? this._windowWidth * this._hookWidth / 100 : this._hookWidth;
+      hook.style.width = hookWidthValue + 'px';
       hook.style.height = '100%';
       hook.style.top = '0';
       hook.style.position = 'absolute';
       hook.style.cursor = 'pointer';
 
       if (this._mode === 'right') {
-        hook.style.left = "-".concat(this._hookWidth, "px");
+        hook.style.left = "-".concat(hookWidthValue, "px");
       } else {
-        hook.style.right = "-".concat(this._hookWidth, "px");
+        hook.style.right = "-".concat(hookWidthValue, "px");
       }
 
       this._element.append(hook);
@@ -769,11 +781,68 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 var Swipe = /*#__PURE__*/function () {
+  /**
+   * @description Whether the movement is initiated
+   * @type boolean
+   */
+
+  /**
+   * @type float
+   */
+
+  /**
+   * @type float
+   */
+
+  /**
+   * @type float
+   */
+
+  /**
+   * @type float
+   */
+
+  /**
+   * @type float
+   */
+
+  /**
+   * @type float
+   */
+
+  /**
+   * @type string|null
+   * @description Current swiping side
+   */
+
+  /**
+   * @constructor
+   * @param selector {string, object}
+   * */
   function Swipe(selector) {
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Swipe);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "inWork", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "xDown", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "yDown", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "xStart", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "yStart", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "xCurrent", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "yCurrent", void 0);
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "currentDirection", void 0);
 
     this.inWork = false;
     this.xDown = null;
@@ -790,17 +859,33 @@ var Swipe = /*#__PURE__*/function () {
       this.eventListener(selector);
     }
   }
+  /**
+   * @description Setter this context
+   * @param field string
+   * @param value
+   * */
+
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Swipe, [{
     key: "set",
     value: function set(field, value) {
       this[field] = value;
     }
+    /**
+     * @description Getter this context
+     * @param field string
+     * */
+
   }, {
     key: "get",
     value: function get(field) {
       return this[field];
     }
+    /**
+     * @description Add listener
+     * @param element object
+     * */
+
   }, {
     key: "eventListener",
     value: function eventListener(element) {
@@ -813,14 +898,19 @@ var Swipe = /*#__PURE__*/function () {
       element.addEventListener('mouseup', this.handleTouchEnd.bind(this));
       element.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
+    /**
+     * @description Get coordinates
+     * @param event object
+     * */
+
   }, {
     key: "getTouches",
-    value: function getTouches(e) {
+    value: function getTouches(event) {
       var result = {
         offsetX: 0,
         offsetY: 0
       };
-      var touch = e.touches ? e.touches[0] : e.originalEvent ? e.originalEvent.touches[0] : false;
+      var touch = event.touches ? event.touches[0] : event.originalEvent ? event.originalEvent.touches[0] : false;
 
       if (touch) {
         result.offsetX = Math.round(touch.clientX);
@@ -832,95 +922,122 @@ var Swipe = /*#__PURE__*/function () {
 
       return result;
     }
+    /**
+     * @description Set init coordinates
+     * @param event object
+     * */
+
   }, {
     key: "handleTouchStart",
-    value: function handleTouchStart(e) {
-      var touche = this.getTouches(e);
+    value: function handleTouchStart(event) {
+      var touche = this.getTouches(event);
       this.set('inWork', true);
       this.set('xDown', touche.offsetX);
       this.set('yDown', touche.offsetY);
       this.set('xStart', touche.offsetX);
       this.set('yStart', touche.offsetY);
-      this.start(e);
+      this.start(event);
     }
+    /**
+     * @description Method for move event
+     * @param event object
+     * */
+
   }, {
     key: "handleTouchMove",
-    value: function handleTouchMove(e) {
+    value: function handleTouchMove(event) {
       if (!this.get('inWork')) {
         return false;
       }
 
-      var touche = this.getTouches(e);
+      var touche = this.getTouches(event);
       this.set('xCurrent', touche.offsetX - this.get('xStart'));
       this.set('yCurrent', touche.offsetY - this.get('yStart'));
       var xDiff = this.get('xDown') - touche.offsetX;
       var yDiff = this.get('yDown') - touche.offsetY;
 
       if (!this.get('currentDirection')) {
-        this.setDirection(e, xDiff, yDiff);
+        this.setDirection(event, xDiff, yDiff);
       }
 
-      this.drag(e);
+      this.drag(event);
 
       if (!this.get('xDown') || !this.get('yDown')) {
         return false;
       }
 
-      this.setDirection(e, xDiff, yDiff);
+      this.setDirection(event, xDiff, yDiff);
       this.set('xDown', null);
       this.set('yDown', null);
     }
+    /**
+     * @description Set current direction
+     * @param event object
+     * @param xDiff float
+     * @param yDiff float
+     * */
+
   }, {
     key: "setDirection",
-    value: function setDirection(e, xDiff, yDiff) {
+    value: function setDirection(event, xDiff, yDiff) {
       if (Math.abs(xDiff) >= Math.abs(yDiff)) {
         if (xDiff > 0) {
           this.set('currentDirection', 'left');
-          this.left(e);
+          this.left(event);
         } else {
           this.set('currentDirection', 'right');
-          this.right(e);
+          this.right(event);
         }
       } else {
         if (yDiff > 0) {
           this.set('currentDirection', 'up');
-          this.up(e);
+          this.up(event);
         } else {
           this.set('currentDirection', 'down');
-          this.down(e);
+          this.down(event);
         }
       }
     }
+    /**
+     * @description Method for touch end
+     * @param event object
+     * */
+
   }, {
     key: "handleTouchEnd",
-    value: function handleTouchEnd(e) {
+    value: function handleTouchEnd(event) {
       this.set('inWork', false);
-      this.stop(e);
+      this.stop(event);
     }
+    /**
+     * @description Method for drag event
+     * @param event object
+     * */
+
   }, {
     key: "drag",
-    value: function drag(e) {
-      e.target.style.transition = 'none';
-      e.target.style.transform = "translate(".concat(this.get('xCurrent'), "px, ").concat(this.get('yCurrent'), "px)");
+    value: function drag(event) {
+      event.target.style.transition = 'none';
+      event.target.style.transform = "translate(".concat(this.get('xCurrent'), "px, ").concat(this.get('yCurrent'), "px)");
     }
   }, {
     key: "left",
-    value: function left(e) {}
+    value: function left(event) {}
   }, {
     key: "right",
-    value: function right(e) {}
+    value: function right(event) {}
   }, {
     key: "up",
-    value: function up(e) {}
+    value: function up(event) {}
   }, {
     key: "down",
-    value: function down(e) {}
+    value: function down(event) {}
   }, {
     key: "start",
-    value: function start(e) {}
+    value: function start(event) {}
   }, {
     key: "stop",
-    value: function stop(e) {}
+    value: function stop(event) {}
   }]);
 
   return Swipe;
