@@ -28,6 +28,12 @@ export default class
     _hookWidth
 
     /**
+     * @description Use percentage of your window as hookWidth.
+     * @type boolean
+     * */
+    _useHookWidthPercentage
+
+    /**
      * @description Capture mode. If enabled, the entire screen is taken into account.
      * @type boolean
      * */
@@ -70,6 +76,7 @@ export default class
      * @param {string} options.mode - Operating mode. Possible values: right, left
      * @param {number} options.width - Menu width.
      * @param {number} options.hookWidth - Side grip width. Does not work if `enableBodyHook` is enabled.
+     * @param {boolean} options.useHookWidthPercentage - Use percentage of your window as hookWidth.
      * @param {boolean} options.enableBodyHook - Capture mode. If enabled, the entire screen is taken into account.
      * @param {object} options.events - Event set.
      * @param {function} options.events.start - Event starting swiping menu.
@@ -80,11 +87,19 @@ export default class
      * */
     constructor(selector, options = {})
     {
-        const { mode = 'right', width = 0, hookWidth = 30, enableBodyHook = false, events = {} } = options
+        const {
+            mode = 'right',
+            width = 0,
+            hookWidth = 30,
+            useHookWidthPercentage = false,
+            enableBodyHook = false,
+            events = {}
+        } = options
 
         this._mode = mode
         this._width = width
         this._hookWidth = hookWidth
+        this._useHookWidthPercentage = useHookWidthPercentage;
         this._enableBodyHook = enableBodyHook
         this._events = Object.assign({
             start:  () => {},
@@ -125,17 +140,20 @@ export default class
     _createHook()
     {
         const hook = document.createElement('div')
+        const hookWidthValue = this._useHookWidthPercentage
+            ? this._windowWidth * this._hookWidth / 100
+            : this._hookWidth
 
-        hook.style.width = this._hookWidth + 'px'
+        hook.style.width = hookWidthValue + 'px'
         hook.style.height = '100%'
         hook.style.top = '0'
         hook.style.position = 'absolute'
         hook.style.cursor = 'pointer'
 
         if (this._mode === 'right') {
-            hook.style.left = `-${this._hookWidth}px`
+            hook.style.left = `-${hookWidthValue}px`
         } else {
-            hook.style.right = `-${this._hookWidth}px`
+            hook.style.right = `-${hookWidthValue}px`
         }
 
         this._element.append(hook)
