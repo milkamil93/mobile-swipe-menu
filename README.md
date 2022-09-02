@@ -83,3 +83,21 @@ new MobileSwipeMenu('#menu', {
     });
 </script>
 ```
+
+### For use in Vue
+This library will work with any front-end library.
+
+The library will have to be transpiled using babel so add the following into the vue.config.js
+
+```
+module.exports = {
+	transpileDependencies: [
+		'mobile-swipe-menu'
+	]
+};
+```
+
+### For use in typescript 
+in src folder add file: "mobile-swipe-menu.d.ts" with the following contents:
+
+`declare module 'mobile-swipe-menu';`
