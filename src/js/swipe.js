@@ -114,8 +114,8 @@ export class Swipe
             result.offsetX = Math.round(touch.clientX)
             result.offsetY = Math.round(touch.clientY)
         } else {
-            result.offsetX = Math.round(e.clientX)
-            result.offsetY = Math.round(e.clientY)
+            result.offsetX = Math.round(event.clientX)
+            result.offsetY = Math.round(event.clientY)
         }
 
         return result
