@@ -1,9 +1,9 @@
 /**
  * @package        mobile-swipe-menu
- * @version        2.2.3
+ * @version        2.3.0
  * @description    Swipe Menu with Vanilla JS for mobile
  * @author         milkamil93
- * @copyright      2021 mobile-swipe-menu
+ * @copyright      2024 mobile-swipe-menu
  * @license        GPL-3.0
  * @link           https://github.com/milkamil93/mobile-swipe-menu
 *//******/ (function(modules) { // webpackBootstrap
@@ -106,9 +106,7 @@ function _classCallCheck(instance, Constructor) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
-
-module.exports = _classCallCheck;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
+module.exports = _classCallCheck, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
@@ -117,26 +115,27 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
   !*** ./node_modules/@babel/runtime/helpers/createClass.js ***!
   \************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+var toPropertyKey = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime/helpers/toPropertyKey.js");
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
     if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
+    Object.defineProperty(target, toPropertyKey(descriptor.key), descriptor);
   }
 }
-
 function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
+  Object.defineProperty(Constructor, "prototype", {
+    writable: false
+  });
   return Constructor;
 }
-
-module.exports = _createClass;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
+module.exports = _createClass, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
@@ -145,9 +144,11 @@ module.exports["default"] = module.exports, module.exports.__esModule = true;
   !*** ./node_modules/@babel/runtime/helpers/defineProperty.js ***!
   \***************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+var toPropertyKey = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime/helpers/toPropertyKey.js");
 function _defineProperty(obj, key, value) {
+  key = toPropertyKey(key);
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -158,12 +159,68 @@ function _defineProperty(obj, key, value) {
   } else {
     obj[key] = value;
   }
-
   return obj;
 }
+module.exports = _defineProperty, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
-module.exports = _defineProperty;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/toPrimitive.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/toPrimitive.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _typeof = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/typeof.js")["default"];
+function toPrimitive(t, r) {
+  if ("object" != _typeof(t) || !t) return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != _typeof(i)) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r ? String : Number)(t);
+}
+module.exports = toPrimitive, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/toPropertyKey.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/toPropertyKey.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _typeof = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/typeof.js")["default"];
+var toPrimitive = __webpack_require__(/*! ./toPrimitive.js */ "./node_modules/@babel/runtime/helpers/toPrimitive.js");
+function toPropertyKey(t) {
+  var i = toPrimitive(t, "string");
+  return "symbol" == _typeof(i) ? i : String(i);
+}
+module.exports = toPropertyKey, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/typeof.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/typeof.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _typeof(o) {
+  "@babel/helpers - typeof";
+
+  return (module.exports = _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+    return typeof o;
+  } : function (o) {
+    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+  }, module.exports.__esModule = true, module.exports["default"] = module.exports), _typeof(o);
+}
+module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
 
@@ -203,64 +260,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 var _default = /*#__PURE__*/function () {
-  /**
-   * @description Operating mode. Possible values: `right`, `left`
-   * @type string
-   */
-
-  /**
-   * @deprecated Will be deleted in version 3.0. Use `disableSwipe` or `enableSwipe` methods instead.
-   * @description The status of whether the swipe will run.
-   * @type boolean
-   */
-
-  /**
-   * @description Menu width.
-   * @type number
-   * */
-
-  /**
-   * @description Side grip width. Does not work if `enableBodyHook` is enabled.
-   * @type number
-   * */
-
-  /**
-   * @description Use percentage of your window as hookWidth.
-   * @type boolean
-   * */
-
-  /**
-   * @description Capture mode. If enabled, the entire screen is taken into account.
-   * @type boolean
-   * */
-
-  /**
-   * @description Scrolling bar width.
-   * @types number, boolean
-   * */
-
-  /**
-   * @description Menu open status.
-   * @type boolean
-   * */
-
-  /**
-   * @description Event set.
-   * @type object
-   * */
-
-  /**
-   * @description Menu element in document.
-   * @type object
-   * */
-
-  /**
-   * @description Window width.
-   * @type number
-   * */
-
   /**
    * @constructor
    * @param {string, object} selector - Menu element or selector in document.
@@ -279,43 +279,75 @@ var _default = /*#__PURE__*/function () {
    * */
   function _default(selector) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, _default);
-
+    /**
+     * @description Operating mode. Possible values: `right`, `left`
+     * @type string
+     */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_mode", void 0);
-
+    /**
+     * @deprecated Will be deleted in version 3.0. Use `disableSwipe` or `enableSwipe` methods instead.
+     * @description The status of whether the swipe will run.
+     * @type boolean
+     */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "lock", false);
-
+    /**
+     * @description Menu width.
+     * @type number
+     * */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_width", void 0);
-
+    /**
+     * @description Side grip width. Does not work if `enableBodyHook` is enabled.
+     * @type number
+     * */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_hookWidth", void 0);
-
+    /**
+     * @description Use percentage of your window as hookWidth.
+     * @type boolean
+     * */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_useHookWidthPercentage", void 0);
-
+    /**
+     * @description Capture mode. If enabled, the entire screen is taken into account.
+     * @type boolean
+     * */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_enableBodyHook", void 0);
-
+    /**
+     * @description Scrolling bar width.
+     * @types number, boolean
+     * */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_scrollWidth", false);
-
+    /**
+     * @description Menu open status.
+     * @type boolean
+     * */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_isOpened", false);
-
+    /**
+     * @description Event set.
+     * @type object
+     * */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_events", void 0);
-
+    /**
+     * @description Menu element in document.
+     * @type object
+     * */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_element", void 0);
-
+    /**
+     * @description Window width.
+     * @type number
+     * */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "_windowWidth", void 0);
-
     var _options$mode = options.mode,
-        mode = _options$mode === void 0 ? 'right' : _options$mode,
-        _options$width = options.width,
-        width = _options$width === void 0 ? 0 : _options$width,
-        _options$hookWidth = options.hookWidth,
-        hookWidth = _options$hookWidth === void 0 ? 30 : _options$hookWidth,
-        _options$useHookWidth = options.useHookWidthPercentage,
-        useHookWidthPercentage = _options$useHookWidth === void 0 ? false : _options$useHookWidth,
-        _options$enableBodyHo = options.enableBodyHook,
-        enableBodyHook = _options$enableBodyHo === void 0 ? false : _options$enableBodyHo,
-        _options$events = options.events,
-        events = _options$events === void 0 ? {} : _options$events;
+      mode = _options$mode === void 0 ? 'right' : _options$mode,
+      _options$width = options.width,
+      width = _options$width === void 0 ? 0 : _options$width,
+      _options$hookWidth = options.hookWidth,
+      hookWidth = _options$hookWidth === void 0 ? 30 : _options$hookWidth,
+      _options$useHookWidth = options.useHookWidthPercentage,
+      useHookWidthPercentage = _options$useHookWidth === void 0 ? false : _options$useHookWidth,
+      _options$enableBodyHo = options.enableBodyHook,
+      enableBodyHook = _options$enableBodyHo === void 0 ? false : _options$enableBodyHo,
+      _options$events = options.events,
+      events = _options$events === void 0 ? {} : _options$events;
     this._mode = mode;
     this._width = width;
     this._hookWidth = hookWidth;
@@ -328,21 +360,17 @@ var _default = /*#__PURE__*/function () {
       closed: function closed() {},
       drag: function drag() {}
     }, events);
-
     this._connectElement(selector);
-
     if (!enableBodyHook) {
       this._createHook();
     }
-
     this._init();
   }
+
   /**
    * @description Creating a menu element in a document.
    * @param {string, object} selector - Menu element or selector in document.
    * */
-
-
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(_default, [{
     key: "_connectElement",
     value: function _connectElement(selector) {
@@ -355,10 +383,10 @@ var _default = /*#__PURE__*/function () {
       this._windowWidth = window.innerWidth - this._getScrollWidth();
       this.setWidth(this._width || this._windowWidth);
     }
+
     /**
      * @description Side grip creation.
      * */
-
   }, {
     key: "_createHook",
     value: function _createHook() {
@@ -369,89 +397,78 @@ var _default = /*#__PURE__*/function () {
       hook.style.top = '0';
       hook.style.position = 'absolute';
       hook.style.cursor = 'pointer';
-
       if (this._mode === 'right') {
         hook.style.left = "-".concat(hookWidthValue, "px");
       } else {
         hook.style.right = "-".concat(hookWidthValue, "px");
       }
-
       this._element.append(hook);
     }
+
     /**
      * @description Opening the menu with mode `right`.
      * */
-
   }, {
     key: "_openRightMenu",
     value: function _openRightMenu() {
       this._transition();
-
       this._element.style.transform = "translateX(-".concat(this._width, "px)");
       this._isOpened = true;
-
       this._events.opened.bind(this)();
     }
+
     /**
      * @description Closing the menu with mode `right`.
      * */
-
   }, {
     key: "_closeRightMenu",
     value: function _closeRightMenu() {
       this._transition();
-
       this._element.style.transform = 'translateX(0px)';
       this._isOpened = false;
-
       this._events.closed.bind(this)();
     }
+
     /**
      * @description Opening the menu with mode `left`.
      * */
-
   }, {
     key: "_openLeftMenu",
     value: function _openLeftMenu() {
       this._transition();
-
       this._element.style.transform = "translateX(".concat(this._width, "px)");
       this._isOpened = true;
-
       this._events.opened.bind(this)();
     }
+
     /**
      * @description Closing the menu with mode `left`.
      * */
-
   }, {
     key: "_closeLeftMenu",
     value: function _closeLeftMenu() {
       this._transition();
-
       this._element.style.transform = 'translateX(0px)';
       this._isOpened = false;
-
       this._events.closed.bind(this)();
     }
+
     /**
      * @description Smooth movement.
      * */
-
   }, {
     key: "_transition",
     value: function _transition() {
       var _this = this;
-
       this._element.style.transitionDuration = '300ms';
       setTimeout(function () {
         _this._element.style.transitionDuration = '0ms';
       }, 200);
     }
+
     /**
      * @description Initialization.
      * */
-
   }, {
     key: "_init",
     value: function _init() {
@@ -462,42 +479,31 @@ var _default = /*#__PURE__*/function () {
       hookTarget.style['touch-action'] = 'pan-y';
       hookTarget.style['-ms-touch-action'] = 'pan-y';
       var swipe = new _swipe__WEBPACK_IMPORTED_MODULE_3__["Swipe"](hookTarget);
-
       swipe.start = function (e) {
         if (self.lock && !self._isOpened) {
           return false;
         }
-
         var matrix = new WebKitCSSMatrix(getComputedStyle(target).transform).m41;
         var toucheX = this.getTouches(e).offsetX;
-
         if (matrix) {
           this.set('xStart', toucheX - matrix);
         }
-
         self._events.start.bind(self)(this);
       };
-
       swipe.drag = function (e) {
         if (self.lock && !self._isOpened) {
           return false;
         }
-
         if (['left', 'right'].indexOf(this.currentDirection) >= 0 && e.type === 'touchmove') {
           e.stopImmediatePropagation();
           e.stopPropagation();
-
           if (e.cancelable) {
             e.preventDefault();
           }
         }
-
         self._events.drag.bind(self)(this);
-
         var xCurrent = this.get('xCurrent');
-
         var boxLeft = Math.floor(target.getBoundingClientRect().left) - (self._windowWidth - self._width);
-
         if (self._mode === 'right') {
           switch (this.currentDirection) {
             case 'left':
@@ -508,13 +514,10 @@ var _default = /*#__PURE__*/function () {
                   } else if (xCurrent > 0) {
                     xCurrent = 0;
                   }
-
                   target.style.transform = "translateX(".concat(xCurrent, "px)");
                 }
-
                 break;
               }
-
             case 'right':
               {
                 if (self._windowWidth > boxLeft) {
@@ -523,10 +526,8 @@ var _default = /*#__PURE__*/function () {
                   } else if (-xCurrent > self._width) {
                     xCurrent = -self._width;
                   }
-
                   target.style.transform = "translateX(".concat(xCurrent, "px)");
                 }
-
                 break;
               }
           }
@@ -540,13 +541,10 @@ var _default = /*#__PURE__*/function () {
                   } else if (xCurrent <= 0) {
                     xCurrent = 0;
                   }
-
                   target.style.transform = "translateX(".concat(xCurrent, "px)");
                 }
-
                 break;
               }
-
             case 'left':
               {
                 if (xCurrent >= self._width) {
@@ -554,24 +552,19 @@ var _default = /*#__PURE__*/function () {
                 } else if (xCurrent < 0) {
                   xCurrent = 0;
                 }
-
                 target.style.transform = "translateX(".concat(xCurrent, "px)");
                 break;
               }
           }
         }
       };
-
       swipe.stop = function () {
         if (self.lock && !self._isOpened) {
           return false;
         }
-
         var boxLeft = Math.floor(target.getBoundingClientRect().left);
-
         if (self._mode === 'right') {
           boxLeft = boxLeft - (self._windowWidth - self._width);
-
           switch (this.currentDirection) {
             case 'left':
               {
@@ -584,10 +577,8 @@ var _default = /*#__PURE__*/function () {
                 } else {
                   target.style.transform = 'translateX(0px)';
                 }
-
                 break;
               }
-
             case 'right':
               {
                 if (boxLeft > 0) {
@@ -599,7 +590,6 @@ var _default = /*#__PURE__*/function () {
                 } else {
                   target.style.transform = "translateX(-".concat(self._width, "px)");
                 }
-
                 break;
               }
           }
@@ -616,10 +606,8 @@ var _default = /*#__PURE__*/function () {
                 } else {
                   target.style.transform = 'translateX(0px)';
                 }
-
                 break;
               }
-
             case 'left':
               {
                 if (boxLeft < 0) {
@@ -631,24 +619,21 @@ var _default = /*#__PURE__*/function () {
                 } else {
                   target.style.transform = "translateX(".concat(self._width, "px)");
                 }
-
                 break;
               }
           }
         }
-
         self._events.stop.bind(self)(this);
       };
     }
+
     /**
      * @description Getting the width of the scrollbar.
      * */
-
   }, {
     key: "_getScrollWidth",
     value: function _getScrollWidth() {
       var result = this._scrollWidth;
-
       if (result === false) {
         var div = document.createElement('div');
         div.style.overflowY = 'scroll';
@@ -658,22 +643,21 @@ var _default = /*#__PURE__*/function () {
         this._scrollWidth = div.offsetWidth - div.clientWidth;
         div.remove();
       }
-
       return result;
     }
+
     /**
      * @deprecated Since version 2.1 Will be deleted in version 3.0. Use openMenu instead.
      */
-
   }, {
     key: "open",
     value: function open() {
       this.openMenu();
     }
+
     /**
      * @description Opens the menu.
      * */
-
   }, {
     key: "openMenu",
     value: function openMenu() {
@@ -683,19 +667,19 @@ var _default = /*#__PURE__*/function () {
         this._openLeftMenu();
       }
     }
+
     /**
      * @deprecated Since version 2.1 Will be deleted in version 3.0. Use closeMenu instead.
      */
-
   }, {
     key: "close",
     value: function close() {
       this.closeMenu();
     }
+
     /**
      * @description Closes the menu.
      * */
-
   }, {
     key: "closeMenu",
     value: function closeMenu() {
@@ -705,19 +689,19 @@ var _default = /*#__PURE__*/function () {
         this._closeLeftMenu();
       }
     }
+
     /**
      * @deprecated Since version 2.1 Will be deleted in version 3.0. Use toggleMenu instead.
      */
-
   }, {
     key: "toggle",
     value: function toggle() {
       this.toggleMenu();
     }
+
     /**
      * @description Opens or closes the menu.
      * */
-
   }, {
     key: "toggleMenu",
     value: function toggleMenu() {
@@ -727,29 +711,29 @@ var _default = /*#__PURE__*/function () {
         this.openMenu();
       }
     }
+
     /**
      * @description Disables menu swiping.
      * */
-
   }, {
     key: "disableSwipe",
     value: function disableSwipe() {
       this.lock = true;
     }
+
     /**
      * @description Enables menu swiping.
      * */
-
   }, {
     key: "enableSwipe",
     value: function enableSwipe() {
       this.lock = false;
     }
+
     /**
      * @description Set width menu
      * @param width float Numeric floating point value
      * */
-
   }, {
     key: "setWidth",
     value: function setWidth() {
@@ -759,10 +743,8 @@ var _default = /*#__PURE__*/function () {
       this._element.style[this._mode] = -this._width + 'px';
     }
   }]);
-
   return _default;
 }();
-
 
 
 /***/ }),
@@ -788,62 +770,45 @@ __webpack_require__.r(__webpack_exports__);
 
 var Swipe = /*#__PURE__*/function () {
   /**
-   * @description Whether the movement is initiated
-   * @type boolean
-   */
-
-  /**
-   * @type float
-   */
-
-  /**
-   * @type float
-   */
-
-  /**
-   * @type float
-   */
-
-  /**
-   * @type float
-   */
-
-  /**
-   * @type float
-   */
-
-  /**
-   * @type float
-   */
-
-  /**
-   * @type string|null
-   * @description Current swiping side
-   */
-
-  /**
    * @constructor
    * @param selector {string, object}
    * */
   function Swipe(selector) {
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Swipe);
-
+    /**
+     * @description Whether the movement is initiated
+     * @type boolean
+     */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "inWork", void 0);
-
+    /**
+     * @type float
+     */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "xDown", void 0);
-
+    /**
+     * @type float
+     */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "yDown", void 0);
-
+    /**
+     * @type float
+     */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "xStart", void 0);
-
+    /**
+     * @type float
+     */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "yStart", void 0);
-
+    /**
+     * @type float
+     */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "xCurrent", void 0);
-
+    /**
+     * @type float
+     */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "yCurrent", void 0);
-
+    /**
+     * @type string|null
+     * @description Current swiping side
+     */
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_2___default()(this, "currentDirection", void 0);
-
     this.inWork = false;
     this.xDown = null;
     this.yDown = null;
@@ -852,40 +817,38 @@ var Swipe = /*#__PURE__*/function () {
     this.xCurrent = null;
     this.yCurrent = null;
     this.currentDirection = null;
-
     if (typeof selector === 'string') {
       document.querySelectorAll(selector).forEach(this.eventListener.bind(this));
     } else {
       this.eventListener(selector);
     }
   }
+
   /**
    * @description Setter this context
    * @param field string
    * @param value
    * */
-
-
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Swipe, [{
     key: "set",
     value: function set(field, value) {
       this[field] = value;
     }
+
     /**
      * @description Getter this context
      * @param field string
      * */
-
   }, {
     key: "get",
     value: function get(field) {
       return this[field];
     }
+
     /**
      * @description Add listener
      * @param element object
      * */
-
   }, {
     key: "eventListener",
     value: function eventListener(element) {
@@ -898,11 +861,11 @@ var Swipe = /*#__PURE__*/function () {
       element.addEventListener('mouseup', this.handleTouchEnd.bind(this));
       element.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
+
     /**
      * @description Get coordinates
      * @param event object
      * */
-
   }, {
     key: "getTouches",
     value: function getTouches(event) {
@@ -911,22 +874,20 @@ var Swipe = /*#__PURE__*/function () {
         offsetY: 0
       };
       var touch = event.touches ? event.touches[0] : event.originalEvent ? event.originalEvent.touches[0] : false;
-
       if (touch) {
         result.offsetX = Math.round(touch.clientX);
         result.offsetY = Math.round(touch.clientY);
       } else {
-        result.offsetX = Math.round(e.clientX);
-        result.offsetY = Math.round(e.clientY);
+        result.offsetX = Math.round(event.clientX);
+        result.offsetY = Math.round(event.clientY);
       }
-
       return result;
     }
+
     /**
      * @description Set init coordinates
      * @param event object
      * */
-
   }, {
     key: "handleTouchStart",
     value: function handleTouchStart(event) {
@@ -938,45 +899,40 @@ var Swipe = /*#__PURE__*/function () {
       this.set('yStart', touche.offsetY);
       this.start(event);
     }
+
     /**
      * @description Method for move event
      * @param event object
      * */
-
   }, {
     key: "handleTouchMove",
     value: function handleTouchMove(event) {
       if (!this.get('inWork')) {
         return false;
       }
-
       var touche = this.getTouches(event);
       this.set('xCurrent', touche.offsetX - this.get('xStart'));
       this.set('yCurrent', touche.offsetY - this.get('yStart'));
       var xDiff = this.get('xDown') - touche.offsetX;
       var yDiff = this.get('yDown') - touche.offsetY;
-
       if (!this.get('currentDirection')) {
         this.setDirection(event, xDiff, yDiff);
       }
-
       this.drag(event);
-
       if (!this.get('xDown') || !this.get('yDown')) {
         return false;
       }
-
       this.setDirection(event, xDiff, yDiff);
       this.set('xDown', null);
       this.set('yDown', null);
     }
+
     /**
      * @description Set current direction
      * @param event object
      * @param xDiff float
      * @param yDiff float
      * */
-
   }, {
     key: "setDirection",
     value: function setDirection(event, xDiff, yDiff) {
@@ -998,22 +954,22 @@ var Swipe = /*#__PURE__*/function () {
         }
       }
     }
+
     /**
      * @description Method for touch end
      * @param event object
      * */
-
   }, {
     key: "handleTouchEnd",
     value: function handleTouchEnd(event) {
       this.set('inWork', false);
       this.stop(event);
     }
+
     /**
      * @description Method for drag event
      * @param event object
      * */
-
   }, {
     key: "drag",
     value: function drag(event) {
@@ -1039,7 +995,6 @@ var Swipe = /*#__PURE__*/function () {
     key: "stop",
     value: function stop(event) {}
   }]);
-
   return Swipe;
 }();
 
